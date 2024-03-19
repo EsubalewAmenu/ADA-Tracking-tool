@@ -41,17 +41,14 @@ class Att_admin_Base
 		$position = 200;
 		add_menu_page($page_title, $menu_title, $capability, $menu_slug, $functionCallable, $icon_url, $position);
 		add_submenu_page($menu_slug, "My Receiving Address", "My Receiving Address", $capability, $menu_slug . '-receiving-address', array($this, "att_menu_receiving_address_OnClick"));
-		add_submenu_page($menu_slug, "Setting", "setting", $capability, $menu_slug . '-setting', array($this, "att_menu_setting_OnClick"));
+
+		$Att_admin_settings = new Att_admin_settings();
+		add_submenu_page($menu_slug, "Setting", "setting", $capability, $menu_slug . '-setting', array($Att_admin_settings, "att_menu_setting_OnClick"));
 	}
 
 	public function att_menu_page_on_click()
 	{
 		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'partials/info/how-to-use.php';
-	}
-
-	public function att_menu_setting_OnClick()
-	{
-		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'partials/settings/index.php';
 	}
 
 	public function att_menu_receiving_address_OnClick()
