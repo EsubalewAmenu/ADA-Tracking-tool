@@ -117,6 +117,7 @@ class Att {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-att-admin.php';
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controller/att-admin-base.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controller/settings.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
@@ -161,6 +162,10 @@ class Att {
 
 		$att_admin_base = new Att_admin_base();
 		$this->loader->add_action('admin_menu', $att_admin_base, 'att_base_menu_section');
+
+		$Att_admin_settings = new Att_admin_settings();
+		// Register settings and sections
+		$this->loader->add_action('admin_init', $Att_admin_settings, 'ada_tracking_settings_init');
 
 	}
 
