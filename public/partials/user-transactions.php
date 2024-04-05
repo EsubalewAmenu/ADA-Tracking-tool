@@ -14,6 +14,7 @@
                 <thead>
                     <tr>
                         <th>Amount</th>
+                        <th>Token(s)</th>
                         <th>TX hash</th>
                         <th>TX time</th>
                     </tr>
@@ -61,6 +62,7 @@
                         fetchedHistoryData.style.display = 'none';
                     }else if (res["code"] == 200) {
                         const tableBody = document.querySelector('#transaction-table-body');
+                        var tokenList;
 
                         // Clear existing rows
                         tableBody.innerHTML = '';
@@ -68,8 +70,21 @@
                         // Add new rows
                         res['rows'].forEach(item => {
                             const newRow = document.createElement('tr');
+
+                            if(item.token == 0)
+                                tokenList = "ADA";
+                            else{
+                                tokenList = "";
+                                // item.tokens
+                                item.tokens['rows'].forEach(eachTokens => {
+                                    tokenList += eachTokens.ticker + " ";
+                                });
+                            }
+
+
                             newRow.innerHTML = `
                                 <td>${item.amount}</td>
+                                <td>${tokenList}</td>
                                 <td>${item.tx_hash.substring(0, 15)}...</td>
                                 <td>${formatDate(item.time)}</td>
                             `;

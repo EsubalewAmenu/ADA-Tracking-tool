@@ -27,13 +27,13 @@ class Att_public_transactions
 	public function att_transaction_history_OnClick()
 	{
 
-        ob_start();
-        
-        wp_enqueue_style('att-transaction-history-style', plugin_dir_url(__FILE__) . '../css/att-public-transaction-history.css', false, '1.0', 'all');
+                ob_start();
+                
+                wp_enqueue_style('att-transaction-history-style', plugin_dir_url(__FILE__) . '../css/att-public-transaction-history.css', false, '1.0', 'all');
 
-        include_once plugin_dir_path(dirname(__FILE__)) . 'partials/user-transactions.php';
-    
-        return ob_get_clean();
+                include_once plugin_dir_path(dirname(__FILE__)) . 'partials/user-transactions.php';
+        
+                return ob_get_clean();
 
 	}
 
@@ -42,12 +42,12 @@ class Att_public_transactions
                 $page = $_POST['page'];
 
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/../common/fetch-data.php';
-		$fetch_data = new Fetch_Data();
-		$data = $fetch_data->get_history($ada_address);
+                require_once plugin_dir_path( dirname( __FILE__ ) ) . '/../common/fetch-data.php';
+                $fetch_data = new Fetch_Data();
+                $data = $fetch_data->get_history($ada_address);
 
                 print_r($data);
                 die();
-              }
+        }
 
 }
