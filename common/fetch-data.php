@@ -39,11 +39,8 @@
         // Get the response body
         $body = wp_remote_retrieve_body( $response );
     
-        // Decode JSON if needed
-        $data = json_decode( $body, true );
-    
         // Return the data
-        return $data;
+        return $body;
     }
     
  }

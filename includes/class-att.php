@@ -118,12 +118,14 @@ class Att {
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controller/att-admin-base.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controller/settings.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controller/transactions.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-att-public.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/controller/user-transactions.php';
 
 		$this->loader = new Att_Loader();
 
@@ -183,6 +185,13 @@ class Att {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
+
+		$Att_public_transactions = new Att_public_transactions();
+		$this->loader->add_shortcode( 'att_transaction_history_code', $Att_public_transactions, 'att_transaction_history_OnClick' );
+	
+
+		$this->loader->add_action('wp_ajax_load_transaction_history', $Att_public_transactions, 'wp_ajax_load_transaction_history');
+		$this->loader->add_action('wp_ajax_nopriv_load_transaction_history', $Att_public_transactions, 'wp_ajax_load_transaction_history');
 	}
 
 	/**

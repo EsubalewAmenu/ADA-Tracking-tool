@@ -40,6 +40,7 @@ class Att_Loader {
 	 * @var      array    $filters    The filters registered with WordPress to fire when the plugin loads.
 	 */
 	protected $filters;
+	protected $shortcodes;
 
 	/**
 	 * Initialize the collections used to maintain the actions and filters.
@@ -50,6 +51,7 @@ class Att_Loader {
 
 		$this->actions = array();
 		$this->filters = array();
+		$this->shortcodes = array();
 
 	}
 
@@ -124,6 +126,15 @@ class Att_Loader {
 			add_action( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 		}
 
+	
+		foreach ( $this->shortcodes as $hook ) {
+			add_shortcode( $hook['hook'], array( $hook['component'], $hook['callback'] ) );
+		}
+
 	}
+	public function add_shortcode( $tag, $component, $callback, $priority = 10, $accepted_args = 2 ) {
+		$this->shortcodes = $this->add( $this->shortcodes, $tag, $component, $callback, $priority, $accepted_args );
+	}
+
 
 }
