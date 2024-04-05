@@ -14,7 +14,6 @@
                 <thead>
                     <tr>
                         <th>Amount</th>
-                        <th>Token(s)</th>
                         <th>TX hash</th>
                         <th>TX time</th>
                     </tr>
@@ -46,9 +45,11 @@
                     page:"1"
                 },
                 success: function(response) {
+                    // console.log("request response is ");
+                    // console.log(response);
+                    
                     const res = JSON.parse(response)
-                    console.log("request response is ");
-                    console.log(res);
+
                     if (res["code"] == 404) {
                         var errorMessageElement = document.querySelector('#error_message');
                         if (!errorMessageElement) {
@@ -74,17 +75,16 @@
                             if(item.token == 0)
                                 tokenList = "ADA";
                             else{
-                                tokenList = "";
+                                tokenList = "ADA ";
                                 // item.tokens
                                 item.tokens['rows'].forEach(eachTokens => {
-                                    tokenList += eachTokens.ticker + " ";
+                                    tokenList += "</br>("+formatMoney(eachTokens.quantity, eachTokens.decimals) + " " +eachTokens.ticker + ")";
                                 });
                             }
 
 
                             newRow.innerHTML = `
-                                <td>${item.amount}</td>
-                                <td>${tokenList}</td>
+                                <td>${formatMoney(item.amount, 6)} ${tokenList}</td>
                                 <td>${item.tx_hash.substring(0, 15)}...</td>
                                 <td>${formatDate(item.time)}</td>
                             `;
@@ -97,6 +97,13 @@
             });
         }
 
+    }
+    function formatMoney(amount, decimalpoint) {
+    // Find index of the decimal point
+    let decimalIndex = amount.length - decimalpoint;
+    // Insert comma and decimal point
+    let formattedAmount = amount.slice(0, decimalIndex).replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "." + amount.slice(decimalIndex).replace(/0+$/, "");
+    return formattedAmount;
     }
 
     fetch_btn.addEventListener('click', fetchTransactionHistory);
