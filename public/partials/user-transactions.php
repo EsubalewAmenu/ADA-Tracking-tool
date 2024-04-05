@@ -78,7 +78,7 @@
                                 tokenList = "ADA ";
                                 // item.tokens
                                 item.tokens['rows'].forEach(eachTokens => {
-                                    tokenList += "</br>("+formatMoney(eachTokens.quantity, eachTokens.decimals) + " " +eachTokens.ticker + ")";
+                                    tokenList += "</br>"+formatMoney(eachTokens.quantity, eachTokens.decimals) + " " +eachTokens.ticker + "";
                                 });
                             }
 
