@@ -3,9 +3,9 @@ Contributors: esubalewa
 Tags: Cardano, blockchain, explorer
 Requires at least: 3.0.1
 Tested up to: 3.4
-Stable tag: 4.3
-License: MIT License
-License URI: [https://opensource.org/license/mit](https://opensource.org/license/mit)
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Stable tag: 1.0.0
 
 Transaction and asset tracker for Cardano Integration plugin!
 
@@ -44,7 +44,7 @@ We are committed to continuously improving the plugin based on user feedback. Do
 - Updated Versions: Regular releases of updated versions of the plugin, incorporating user feedback and addressing reported issues.
 
 ## Changelog:
-[Version 1.0]
+[Version 1.0.0]
 - Initial release
 - Real-time tracking feature added
 - Asset details functionality implemented

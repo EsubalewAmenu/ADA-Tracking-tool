@@ -192,6 +192,19 @@ class Att {
 
 		$this->loader->add_action('wp_ajax_load_transaction_history', $Att_public_transactions, 'wp_ajax_load_transaction_history');
 		$this->loader->add_action('wp_ajax_nopriv_load_transaction_history', $Att_public_transactions, 'wp_ajax_load_transaction_history');
+	
+	
+		add_action('wp_ajax_load_transaction_history', 'load_transaction_history_callback');
+
+		function load_transaction_history_callback() {
+			// Verify nonce
+			if ( ! isset( $_POST['security'] ) || ! wp_verify_nonce( $_POST['security'], 'load_transaction_history_nonce' ) ) {
+				wp_send_json_error( 'Nonce verification failed.', 403 );
+			}
+		
+			// Your AJAX handling code
+		}
+		
 	}
 
 	/**

@@ -28,7 +28,7 @@
 </div>
 
 <script>
-    var ajaxurl = "<?php echo admin_url('admin-ajax.php') ?>";
+    var ajaxurl = "<?php echo esc_attr(admin_url('admin-ajax.php')) ?>";
     const fetch_btn = document.querySelector('#fetch_btn');
     const fetchedHistoryData = document.querySelector('.fetched-history-data');
     var ada_address = '';
@@ -42,7 +42,9 @@
                 data: {
                     action: 'load_transaction_history',
                     ada_address:ada_address,
-                    page:"1"
+                    page:"1",
+                    security: '<?php echo esc_attr(wp_create_nonce("load_transaction_history_nonce")); ?>'
+    
                 },
                 success: function(response) {
                     // console.log("request response is ");

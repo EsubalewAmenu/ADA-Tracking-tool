@@ -38,6 +38,10 @@ class Att_public_transactions
 	}
 
         public function wp_ajax_load_transaction_history(){
+
+    
+                check_ajax_referer( 'load_transaction_history_nonce', 'security' );
+
                 $ada_address = $_POST['ada_address'];
                 $page = $_POST['page'];
 

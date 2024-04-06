@@ -40,6 +40,9 @@ public function att_menu_my_transactions_OnClick()
             'tx_hash' => 'Transaction Hash',
         );
 
+		// for($i = 0; $i < count($data['rows']); $i++){
+		// 	$data['rows'][$i]['amount'] = 
+		// }
 
   		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/../common/Custom_Table_List.php';
 		$receiving_addresses_table = new Custom_Table_List($data['rows'], $columns, 15);

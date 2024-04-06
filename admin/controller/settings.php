@@ -146,12 +146,15 @@ function input_field_callback($name, $description, $input_type) {
 
     if ($input_type === 'checkbox') {
         $checked = isset($options[$name]) && $options[$name] === 'on' ? 'checked="checked"' : '';
-        echo '<input type="' . $input_type . '" name="ada_tracking_option[' . $name . ']" ' . $checked . ' />';
-    } else {
-        echo '<input type="' . $input_type . '" name="ada_tracking_option[' . $name . ']" value="' . $value . '" />';
-    }
-    
-    echo '<p class="description">' . $description . '</p>';
+        ?>
+        <input type="<?php echo esc_attr($input_type) ?>" name="ada_tracking_option[<?php echo esc_attr($name)  ?>]" <?php echo esc_attr( $checked) ?>/>
+        <?php
+    } else { ?>
+        <input type="<?php echo esc_attr($input_type)?>" name="ada_tracking_option[<?php echo esc_attr($name)?>]" value="<?php echo esc_attr($value)?>" />
+    <?php }
+    ?>
+    <p class="description"><?php echo esc_attr($description)?></p>
+<?php
 }
 
 
