@@ -13,7 +13,7 @@
  * @package           Att
  *
  * @wordpress-plugin
- * Plugin Name:       ATT - ADA Tracking Tool
+ * Plugin Name:       ADA Tracking Tool
  * Plugin URI:        https://datascienceplc.com/cardano/att
  * Description:       ADA Tracking tool
  * Version:           1.0.0
