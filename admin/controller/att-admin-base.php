@@ -45,7 +45,10 @@ class Att_admin_Base
 		add_submenu_page($menu_slug, "My Transactions", "My Transactions", $capability, $menu_slug . '-my-transactions', array($Att_admin_transactions, "att_menu_my_transactions_OnClick"));
 
 		$Att_admin_settings = new Att_admin_settings();
-		add_submenu_page($menu_slug, "Setting", "setting", $capability, $menu_slug . '-setting', array($Att_admin_settings, "att_menu_setting_OnClick"));
+		add_submenu_page($menu_slug, "Setting", "Settings", $capability, $menu_slug . '-setting', array($Att_admin_settings, "att_menu_setting_OnClick"));
+
+		$Att_admin_cron_schedule = new Att_admin_cron_schedule();
+		add_submenu_page($menu_slug, "Cron Schedule", "Cron Schedule", $capability, $menu_slug . '-cron-schedule', array($Att_admin_cron_schedule, "att_menu_cron_schedule_OnClick"));
 	}
 
 	public function att_menu_page_on_click()

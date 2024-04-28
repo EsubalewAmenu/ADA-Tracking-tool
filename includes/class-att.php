@@ -119,6 +119,7 @@ class Att {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controller/att-admin-base.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controller/settings.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controller/transactions.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controller/cron-schedule.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
