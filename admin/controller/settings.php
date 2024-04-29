@@ -23,151 +23,226 @@
 class Att_admin_settings
 {
 
-	public function att_menu_setting_OnClick()
-	{
-		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'partials/settings/index.php';
-	}
+    public function att_menu_setting_OnClick()
+    {
+        include_once plugin_dir_path(dirname(__FILE__)) . 'partials/settings/index.php';
+    }
 
 
-function ada_tracking_settings_init() {
-    // Register a setting and its sanitization callback
-    register_setting('ada_tracking_settings_group', 'ada_tracking_option', 'sanitize_callback');
+    function ada_tracking_settings_init()
+    {
+        // Register a setting and its sanitization callback
+        register_setting('ada_tracking_settings_group', 'ada_tracking_option', 'sanitize_callback');
 
-    // Add a section and fields to the settings page
-    add_settings_section(
-        'ada_tracking_settings_section',
-        '',//'Custom Plugin Settings Section',
-        array($this, 'ada_tracking_settings_section_callback'),
-        'ada-tracking-plugin'
-    );
+        // Add a section and fields to the settings page
+        add_settings_section(
+            'ada_tracking_settings_section',
+            '', //'Custom Plugin Settings Section',
+            array($this, 'ada_tracking_settings_section_callback'),
+            'ada-tracking-plugin'
+        );
 
-    add_settings_field(
-        "receiving_address",
-        'ADA Receiving Address',
-        function () {
-            $name = "receiving_address";
-            $description = 'Site owner/transaction receiving address';
-            self::input_field_callback($name, $description, "text");
-        },
-        'ada-tracking-plugin',
-        'ada_tracking_settings_section'
-    );
+        add_settings_field(
+            "receiving_address",
+            'ADA Receiving Address',
+            function () {
+                $name = "receiving_address";
+                $description = 'Site owner/transaction receiving address';
+                self::input_field_callback($name, $description, "text");
+            },
+            'ada-tracking-plugin',
+            'ada_tracking_settings_section'
+        );
 
-    add_settings_field(
-        "notif_email_address_cb",
-        'Notification Email?',
-        function () {
-            $name = "notif_email_address_cb";
-            $description = 'Do you want notification email when there is new incoming transaction?';
-            self::input_field_callback($name, $description, "checkbox");
-        },
-        'ada-tracking-plugin',
-        'ada_tracking_settings_section'
-    );
-    add_settings_field(
-        "notif_email_address",
-        'Notification Email address',
-        function () {
-            $name = "notif_email_address";
-            $description = 'Notification email will be sent to the above email when there is new incoming transaction';
-            self::input_field_callback($name, $description, "text");
-        },
-        'ada-tracking-plugin',
-        'ada_tracking_settings_section'
-    );
+        add_settings_field(
+            "notif_email_address_cb",
+            'Notification Email?',
+            function () {
+                $name = "notif_email_address_cb";
+                $description = 'Do you want notification email when there is new incoming transaction?';
 
-    ////////////////////////////////////////////////////////////////////////////////////
-    add_settings_field(
-        "prefix_filter_cb",
-        'Filter tx by prefix?',
-        function () {
-            $name = "prefix_filter_cb";
-            $description = 'Do you want to filter incoming transactions based on note prefix text?';
-            self::input_field_callback($name, $description, "checkbox");
-        },
-        'ada-tracking-plugin',
-        'ada_tracking_settings_section'
-    );
-    add_settings_field(
-        "prefix_filter",
-        'Prefix string',
-        function () {
-            $name = "prefix_filter";
-            $description = 'Incoming transactions will be filtered when tx note prefix is matched.';
-            self::input_field_callback($name, $description, "text");
-        },
-        'ada-tracking-plugin',
-        'ada_tracking_settings_section'
-    );
-    ////////////////////////////////////////////////////////////////////////////////////
-
-    ////////////////////////////////////////////////////////////////////////////////////
-    add_settings_field(
-        "suffix_filter_cb",
-        'Filter tx by suffix?',
-        function () {
-            $name = "suffix_filter_cb";
-            $description = 'Do you want to filter incoming transactions based on note suffix text?';
-            self::input_field_callback($name, $description, "checkbox");
-        },
-        'ada-tracking-plugin',
-        'ada_tracking_settings_section'
-    );
-    add_settings_field(
-        "suffix_filter",
-        'Suffix String',
-        function () {
-            $name = "suffix_filter";
-            $description = 'Incoming transactions will be filtered when tx note suffix is matched.';
-            self::input_field_callback($name, $description, "text");
-        },
-        'ada-tracking-plugin',
-        'ada_tracking_settings_section'
-    );
-    ////////////////////////////////////////////////////////////////////////////////////
-
-    add_settings_field(
-        "last_synced",
-        'Last Transaction Synced',
-        function () {
-            $name = "last_synced";
-            $description = 'Incoming transactions will synced starting from the above metioned date.';
-            self::input_field_callback($name, $description, "datetime-local");
-        },
-        'ada-tracking-plugin',
-        'ada_tracking_settings_section'
-    );
-    ////////////////////////////////////////////////////////////////////////////////////
-}
-// Field callback function
-function input_field_callback($name, $description, $input_type) {
-    $options = get_option('ada_tracking_option');
-    $value = isset($options[$name]) ? esc_attr($options[$name]) : '';
-
-    if ($input_type === 'checkbox') {
-        $checked = isset($options[$name]) && $options[$name] === 'on' ? 'checked="checked"' : '';
-        ?>
-        <input type="<?php echo esc_attr($input_type) ?>" name="ada_tracking_option[<?php echo esc_attr($name)  ?>]" <?php echo esc_attr( $checked) ?>/>
+                $options = get_option('ada_tracking_option');
+                $checked = isset($options[$name]) && $options[$name] === 'on' ? 'checked="checked"' : '';
+?>
+            <input type="checkbox" name="ada_tracking_option[<?php echo esc_attr($name) ?>]" <?php echo esc_attr($checked) ?> />
+            <p class="description"><?php echo esc_attr($description) ?></p>
         <?php
-    } else { ?>
-        <input type="<?php echo esc_attr($input_type)?>" name="ada_tracking_option[<?php echo esc_attr($name)?>]" value="<?php echo esc_attr($value)?>" />
-    <?php }
-    ?>
-    <p class="description"><?php echo esc_attr($description)?></p>
+            },
+            'ada-tracking-plugin',
+            'ada_tracking_settings_section'
+        );
+        add_settings_field(
+            "notif_email_address",
+            'Notification Email address',
+            function () {
+                $name = "notif_email_address";
+                $description = 'Notification email will be sent to the above email when there is new incoming transaction';
+                self::input_field_callback($name, $description, "text");
+            },
+            'ada-tracking-plugin',
+            'ada_tracking_settings_section'
+        );
+
+        ////////////////////////////////////////////////////////////////////////////////////
+        add_settings_field(
+            "prefix_filter_cb",
+            'Filter tx by prefix?',
+            function () {
+                $name = "prefix_filter_cb";
+                $description = 'Do you want to filter incoming transactions based on note prefix text?';
+
+                $options = get_option('ada_tracking_option');
+                $checked = isset($options[$name]) && $options[$name] === 'on' ? 'checked="checked"' : '';
+        ?>
+            <input type="checkbox" name="ada_tracking_option[<?php echo esc_attr($name) ?>]" <?php echo esc_attr($checked) ?> />
+            <p class="description"><?php echo esc_attr($description) ?></p>
+        <?php
+            },
+            'ada-tracking-plugin',
+            'ada_tracking_settings_section'
+        );
+        add_settings_field(
+            "prefix_filter",
+            'Prefix string',
+            function () {
+                $name = "prefix_filter";
+                $description = 'Incoming transactions will be filtered when tx note prefix is matched.';
+                self::input_field_callback($name, $description, "text");
+            },
+            'ada-tracking-plugin',
+            'ada_tracking_settings_section'
+        );
+        ////////////////////////////////////////////////////////////////////////////////////
+        add_settings_field(
+            "suffix_filter_cb",
+            'Filter tx by suffix?',
+            function () {
+                $name = "suffix_filter_cb";
+                $description = 'Do you want to filter incoming transactions based on note suffix text?';
+
+                $options = get_option('ada_tracking_option');
+                $checked = isset($options[$name]) && $options[$name] === 'on' ? 'checked="checked"' : '';
+        ?>
+            <input type="checkbox" name="ada_tracking_option[<?php echo esc_attr($name) ?>]" <?php echo esc_attr($checked) ?> />
+            <p class="description"><?php echo esc_attr($description) ?></p>
+        <?php
+            },
+            'ada-tracking-plugin',
+            'ada_tracking_settings_section'
+        );
+        add_settings_field(
+            "suffix_filter",
+            'Suffix String',
+            function () {
+                $name = "suffix_filter";
+                $description = 'Incoming transactions will be filtered when tx note suffix is matched.';
+                self::input_field_callback($name, $description, "text");
+            },
+            'ada-tracking-plugin',
+            'ada_tracking_settings_section'
+        );
+        ////////////////////////////////////////////////////////////////////////////////////
+
+        add_settings_field(
+            "last_synced",
+            'Last Transaction Synced',
+            function () {
+                $name = "last_synced";
+                $description = 'Incoming transactions will synced starting from the above metioned date.';
+                self::input_field_callback($name, $description, "datetime-local");
+            },
+            'ada-tracking-plugin',
+            'ada_tracking_settings_section'
+        );
+        ////////////////////////////////////////////////////////////////////////////////////
+    }
+    // Field callback function
+    function input_field_callback($name, $description, $input_type)
+    {
+        $options = get_option('ada_tracking_option');
+        $value = isset($options[$name]) ? esc_attr($options[$name]) : '';
+
+        if ($input_type === 'checkbox') {
+            $checked = isset($options[$name]) && $options[$name] === 'on' ? 'checked="checked"' : '';
+        ?>
+            <input type="<?php echo esc_attr($input_type) ?>" name="ada_tracking_option[<?php echo esc_attr($name)  ?>]" <?php echo esc_attr($checked) ?> />
+        <?php
+        } else { ?>
+            <input type="<?php echo esc_attr($input_type) ?>" name="ada_tracking_option[<?php echo esc_attr($name) ?>]" value="<?php echo esc_attr($value) ?>" />
+        <?php }
+        ?>
+        <p class="description"><?php echo esc_attr($description) ?></p>
 <?php
-}
+    }
 
 
 
-// Section callback function
-function ada_tracking_settings_section_callback() {
-    // echo '<p>Enter your settings below:</p>';
-}
+    // Section callback function
+    function ada_tracking_settings_section_callback()
+    {
+        // echo '<p>Enter your settings below:</p>';
+    }
 
 
-// Sanitization callback function
-function sanitize_callback($input) {
-    // Sanitize input here
-    return $input;
-}
+    /**
+     * Sanitization and validation callback function
+     *
+     * @param array $input Raw input data from the form
+     * @return array Sanitized and validated data
+     */
+    function sanitize_callback($input)
+    {
+        $sanitized_input = array();
+        echo "test";
+        add_settings_error(
+            'ada_tracking_option',
+            'ada_tracking_receiving_address_error',
+            'The ADA Receiving Address cannot be empty.',
+            'error'
+        );
+
+
+        // Validate and sanitize the ADA Receiving Address
+        if (isset($input['receiving_address'])) {
+            // Basic validation: check if the address is not empty
+            if (!empty($input['receiving_address'])) {
+                // Sanitize the address (as a simple text input)
+                $sanitized_input['receiving_address'] = sanitize_text_field($input['receiving_address']);
+            } else {
+                // Set an error message if the address is empty
+                add_settings_error(
+                    'ada_tracking_option',
+                    'ada_tracking_receiving_address_error',
+                    'The ADA Receiving Address cannot be empty.',
+                    'error'
+                );
+            }
+        }
+
+        // Validate and sanitize the Notification Email Checkbox
+        if (isset($input['notif_email_address_cb'])) {
+            // Checkbox is either on or off
+            $sanitized_input['notif_email_address_cb'] = $input['notif_email_address_cb'] === 'on' ? 'on' : '';
+        }
+
+        // Validate and sanitize the Notification Email Address
+        if (isset($input['notif_email_address'])) {
+            // Basic validation: check if the email is valid
+            if (is_email($input['notif_email_address'])) {
+                $sanitized_input['notif_email_address'] = sanitize_email($input['notif_email_address']);
+            } else {
+                add_settings_error(
+                    'ada_tracking_option',
+                    'ada_tracking_notif_email_address_error',
+                    'Invalid email address provided.',
+                    'error'
+                );
+            }
+        }
+
+        // Validate and sanitize other fields as needed...
+        // For each additional field, repeat similar checks and sanitizations
+
+        return $sanitized_input;
+    }
 }
