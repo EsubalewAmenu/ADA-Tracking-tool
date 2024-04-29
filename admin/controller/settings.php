@@ -48,7 +48,13 @@ class Att_admin_settings
             function () {
                 $name = "receiving_address";
                 $description = 'Site owner/transaction receiving address';
-                self::input_field_callback($name, $description, "text");
+
+                $options = get_option('ada_tracking_option');
+                $value = isset($options[$name]) ? esc_attr($options[$name]) : ''; ?>
+            <input type="text" name="ada_tracking_option[<?php echo esc_attr($name) ?>]" value="<?php echo esc_attr($value) ?>" />
+
+            <p class="description"><?php echo esc_attr($description) ?></p>
+        <?php
             },
             'ada-tracking-plugin',
             'ada_tracking_settings_section'
@@ -63,7 +69,7 @@ class Att_admin_settings
 
                 $options = get_option('ada_tracking_option');
                 $checked = isset($options[$name]) && $options[$name] === 'on' ? 'checked="checked"' : '';
-?>
+        ?>
             <input type="checkbox" name="ada_tracking_option[<?php echo esc_attr($name) ?>]" <?php echo esc_attr($checked) ?> />
             <p class="description"><?php echo esc_attr($description) ?></p>
         <?php
@@ -77,7 +83,14 @@ class Att_admin_settings
             function () {
                 $name = "notif_email_address";
                 $description = 'Notification email will be sent to the above email when there is new incoming transaction';
-                self::input_field_callback($name, $description, "text");
+
+
+                $options = get_option('ada_tracking_option');
+                $value = isset($options[$name]) ? esc_attr($options[$name]) : ''; ?>
+            <input type="text" name="ada_tracking_option[<?php echo esc_attr($name) ?>]" value="<?php echo esc_attr($value) ?>" />
+
+            <p class="description"><?php echo esc_attr($description) ?></p>
+        <?php
             },
             'ada-tracking-plugin',
             'ada_tracking_settings_section'
@@ -107,7 +120,13 @@ class Att_admin_settings
             function () {
                 $name = "prefix_filter";
                 $description = 'Incoming transactions will be filtered when tx note prefix is matched.';
-                self::input_field_callback($name, $description, "text");
+
+                $options = get_option('ada_tracking_option');
+                $value = isset($options[$name]) ? esc_attr($options[$name]) : ''; ?>
+            <input type="text" name="ada_tracking_option[<?php echo esc_attr($name) ?>]" value="<?php echo esc_attr($value) ?>" />
+
+            <p class="description"><?php echo esc_attr($description) ?></p>
+        <?php
             },
             'ada-tracking-plugin',
             'ada_tracking_settings_section'
@@ -136,7 +155,14 @@ class Att_admin_settings
             function () {
                 $name = "suffix_filter";
                 $description = 'Incoming transactions will be filtered when tx note suffix is matched.';
-                self::input_field_callback($name, $description, "text");
+
+
+                $options = get_option('ada_tracking_option');
+                $value = isset($options[$name]) ? esc_attr($options[$name]) : ''; ?>
+            <input type="text" name="ada_tracking_option[<?php echo esc_attr($name) ?>]" value="<?php echo esc_attr($value) ?>" />
+
+            <p class="description"><?php echo esc_attr($description) ?></p>
+        <?php
             },
             'ada-tracking-plugin',
             'ada_tracking_settings_section'
@@ -149,30 +175,19 @@ class Att_admin_settings
             function () {
                 $name = "last_synced";
                 $description = 'Incoming transactions will synced starting from the above metioned date.';
-                self::input_field_callback($name, $description, "datetime-local");
+
+
+                $options = get_option('ada_tracking_option');
+                $value = isset($options[$name]) ? esc_attr($options[$name]) : ''; ?>
+            <input type="datetime-local" name="ada_tracking_option[<?php echo esc_attr($name) ?>]" value="<?php echo esc_attr($value) ?>" />
+
+            <p class="description"><?php echo esc_attr($description) ?></p>
+        <?php
             },
             'ada-tracking-plugin',
             'ada_tracking_settings_section'
         );
         ////////////////////////////////////////////////////////////////////////////////////
-    }
-    // Field callback function
-    function input_field_callback($name, $description, $input_type)
-    {
-        $options = get_option('ada_tracking_option');
-        $value = isset($options[$name]) ? esc_attr($options[$name]) : '';
-
-        if ($input_type === 'checkbox') {
-            $checked = isset($options[$name]) && $options[$name] === 'on' ? 'checked="checked"' : '';
-        ?>
-            <input type="<?php echo esc_attr($input_type) ?>" name="ada_tracking_option[<?php echo esc_attr($name)  ?>]" <?php echo esc_attr($checked) ?> />
-        <?php
-        } else { ?>
-            <input type="<?php echo esc_attr($input_type) ?>" name="ada_tracking_option[<?php echo esc_attr($name) ?>]" value="<?php echo esc_attr($value) ?>" />
-        <?php }
-        ?>
-        <p class="description"><?php echo esc_attr($description) ?></p>
-<?php
     }
 
 
@@ -193,14 +208,6 @@ class Att_admin_settings
     function sanitize_callback($input)
     {
         $sanitized_input = array();
-        echo "test";
-        add_settings_error(
-            'ada_tracking_option',
-            'ada_tracking_receiving_address_error',
-            'The ADA Receiving Address cannot be empty.',
-            'error'
-        );
-
 
         // Validate and sanitize the ADA Receiving Address
         if (isset($input['receiving_address'])) {
