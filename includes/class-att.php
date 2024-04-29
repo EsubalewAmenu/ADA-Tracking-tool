@@ -193,8 +193,24 @@ class Att {
 
 		$this->loader->add_action('wp_ajax_load_transaction_history', $Att_public_transactions, 'wp_ajax_load_transaction_history');
 		$this->loader->add_action('wp_ajax_nopriv_load_transaction_history', $Att_public_transactions, 'wp_ajax_load_transaction_history');
-	
-	
+		
+		$Att_admin_cron_schedule = new Att_admin_cron_schedule();
+
+		// Register Settings and Add Fields
+		$this->loader->add_action('admin_init', $Att_admin_cron_schedule, 'att_register_settings');
+
+		// Managing the Cron Jobs
+		$this->loader->add_action('init', $Att_admin_cron_schedule, 'att_update_cron_job');
+
+		// Handle Form Submissions to Start/Stop Cron Jobs
+		$this->loader->add_action('admin_init', $Att_admin_cron_schedule, 'att_handle_cron_actions');
+
+		add_filter('cron_schedules', array($Att_admin_cron_schedule, 'add_custom_cron_intervals'));
+
+
+
+
+
 		add_action('wp_ajax_load_transaction_history', 'load_transaction_history_callback');
 
 		function load_transaction_history_callback() {
@@ -206,6 +222,15 @@ class Att {
 			// Your AJAX handling code
 		}
 		
+
+
+
+// $schedules = wp_get_schedules();
+// echo '<pre>';
+// print_r($schedules);
+// echo '</pre>';
+
+
 	}
 
 	/**

@@ -23,10 +23,164 @@
 class Att_admin_cron_schedule
 {
 
-	public function att_menu_cron_schedule_OnClick()
-	{
-		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'partials/settings/cron-schedule.php';
-	}
+    public function att_menu_cron_schedule_OnClick()
+    {
+        include_once plugin_dir_path(dirname(__FILE__)) . 'partials/settings/cron-schedule.php';
+    }
+
+    // Register Settings and Add Fields
+    function att_register_settings()
+    {
+        register_setting('att-cron-options', 'att_cron_schedule');
+        add_settings_section(
+            'att_cron_main',
+            'Config your cron schedule settings below.',
+            array($this, 'att_cron_main_text'),
+            'att-cron-schedule'
+        );
+
+        add_settings_field(
+            "att_cron_schedule_fieldtezt",
+            'Cron Schedule status',
+            function () {
+
+                $hook = 'att_cron_hook';
+
+                $timestamp = wp_next_scheduled($hook);
+
+                if ($timestamp) {
+                    $current_time = current_time('timestamp'); // Get the current time with WordPress time zone
+                    $time_difference = $timestamp - $current_time;
+
+                    $formatted_time = get_date_from_gmt(date('Y-m-d H:i:s', $timestamp), 'Y-m-d H:i:s');
+                    $hours = floor($time_difference / 3600);
+                    $minutes = floor(($time_difference % 3600) / 60);
+                    $seconds = $time_difference % 60;
 
 
+                    $name = "att_cron_schedule_fieldtezt";
+                    $description =  'Cron Schedule is running. Next run: ' . $formatted_time . "<br>" .
+                        'Time until next run: ' . $hours . ' hours, ' . $minutes . ' minutes, and ' . $seconds . ' seconds.';
+                    echo $description;
+                } else {
+
+                    $name = "att_cron_schedule_fieldtezt";
+                    $description = "Cron Schedule is not running.";
+                    echo $description;
+                }
+            },
+            'att-cron-schedule',
+            'att_cron_main'
+        );
+        add_settings_field(
+            "att_cron_schedule_field",
+            'Cron Schedule',
+            function () {
+                $value = get_option('att_cron_schedule', 'hourly'); // Default to 'hourly' if not set
+                echo "<select id='att_cron_schedule_field' name='att_cron_schedule'>";
+                echo "<option value='every_minute' " . selected($value, 'every_minute', false) . ">Every Minute</option>";
+                echo "<option value='every_five_minutes' " . selected($value, 'every_five_minutes', false) . ">Every 5 Minutes</option>";
+                echo "<option value='hourly' " . selected($value, 'hourly', false) . ">Hourly</option>";
+                echo "<option value='twicedaily' " . selected($value, 'twicedaily', false) . ">Twice Daily</option>";
+                echo "<option value='daily' " . selected($value, 'daily', false) . ">Daily</option>";
+                echo "</select>";
+            },
+            'att-cron-schedule',
+            'att_cron_main'
+        );
+    }
+
+    function att_cron_main_text()
+    {
+        // echo '<p>Enter your cron schedule settings below.</p>';
+    }
+
+
+    // Managing the Cron Jobs
+    function att_update_cron_job()
+    {
+
+        $schedule = get_option('att_cron_schedule');
+        $hook = 'att_cron_hook';
+
+        $current_time = current_time('timestamp'); // Get the current time according to WordPress
+        $next_scheduled = wp_next_scheduled($hook); // Check when the cron is scheduled
+
+
+        // Get all registered schedules
+        $schedules = wp_get_schedules();
+
+        if ($next_scheduled && ($current_time > $next_scheduled)) {
+            self::att_execute_cron_job();
+        }
+        if ((!$next_scheduled || $current_time > $next_scheduled) && isset($schedules[$schedule]) && !empty($next_scheduled)) {
+            wp_clear_scheduled_hook($hook);
+            $interval = $schedules[$schedule]['interval'];
+            wp_schedule_event(time() + $interval, $schedule, $hook);
+        }
+    }
+
+    function att_execute_cron_job()
+    {
+        add_option('test_cron_task', current_time('timestamp'));
+    }
+
+
+
+    // Handle Form Submissions to Start/Stop Cron Jobs
+
+    function att_handle_cron_actions()
+    {
+        if (isset($_POST['att_start_cron'])) {
+            if (check_admin_referer('att_cron_actions', 'att_cron_nonce')) {
+                if (current_user_can('manage_options')) {
+                    self::att_start_cron_job();
+                }
+            }
+        } elseif (isset($_POST['att_stop_cron'])) {
+            if (check_admin_referer('att_cron_actions', 'att_cron_nonce')) {
+                if (current_user_can('manage_options')) {
+                    self::att_stop_cron_job();
+                }
+            }
+        }
+    }
+
+
+    function att_start_cron_job()
+    {
+        $schedule = get_option('att_cron_schedule');
+        $hook = 'att_cron_hook';
+
+        // Clear any existing hook
+        wp_clear_scheduled_hook($hook);
+        // Schedule a new event if not already scheduled
+        if (!wp_next_scheduled($hook)) {
+            wp_schedule_event(time() + 20, $schedule, $hook);
+        }
+    }
+
+    function att_stop_cron_job()
+    {
+        $hook = 'att_cron_hook';
+        wp_clear_scheduled_hook($hook);
+    }
+
+
+    function add_custom_cron_intervals($schedules)
+    {
+        // Add a custom interval of every 1 minutes
+        $schedules['every_minute'] = array(
+            'interval' => 20,  // Time in seconds
+            'display'  => __('Every Five Minutes')
+        );
+
+        // Add a custom interval of every 5 minutes
+        $schedules['every_five_minutes'] = array(
+            'interval' => 300,  // Time in seconds
+            'display'  => __('Every Five Minutes')
+        );
+
+        return $schedules;
+    }
 }
