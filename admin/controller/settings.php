@@ -43,6 +43,24 @@ class Att_admin_settings
         );
 
         add_settings_field(
+            "blockfrost_api",
+            'Blockfrost project ID',
+            function () {
+                $name = "blockfrost_api";
+                $description = 'Blockfrost mainnet project id';
+
+                $options = get_option('ada_tracking_option');
+                $value = isset($options[$name]) ? esc_attr($options[$name]) : ''; ?>
+            <input type="text" name="ada_tracking_option[<?php echo esc_attr($name) ?>]" value="<?php echo esc_attr($value) ?>" />
+
+            <p class="description"><?php echo esc_attr($description) ?></p>
+        <?php
+            },
+            'ada-tracking-plugin',
+            'ada_tracking_settings_section'
+        );
+
+        add_settings_field(
             "receiving_address",
             'ADA Receiving Address',
             function () {
