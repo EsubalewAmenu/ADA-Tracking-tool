@@ -122,6 +122,20 @@ class Att_admin_cron_schedule
 
     function att_execute_cron_job()
     {
+
+
+        $name = "receiving_address";
+        $options = get_option('ada_tracking_option');
+        $value = isset($options[$name]) ? esc_attr($options[$name]) : '';
+
+
+        if($value != ''){
+            include_once plugin_dir_path(dirname(__FILE__)) . '../common/fetch-data.php';
+            $ATTP_Fetch_Data = new ATTP_Fetch_Data();
+            $result = $ATTP_Fetch_Data->get_history($value);
+
+        }
+     
         add_option('test_cron_task', current_time('timestamp'));
     }
 

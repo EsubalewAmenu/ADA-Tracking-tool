@@ -21,7 +21,7 @@
  * @author     Esubalew Amenu <esubalew.a2009@gmail.com>
  */
 
- class Fetch_Data {
+ class ATTP_Fetch_Data {
     private $base_url = 'https://adastat.net/api/rest/v1/';
 
     function get_history($address) {
