@@ -30,7 +30,7 @@ public function att_menu_my_transactions_OnClick()
 
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/../common/fetch-data.php';
-		$fetch_data = new Fetch_Data();
+		$fetch_data = new ATTP_Fetch_Data();
 		$data = $fetch_data->get_history("addr1qyj7y9d95zdqycpxsu9kyqjxzm7nd0gk2jrqjrnmu9hemclcu29trzjfe76v3y7xvy0lq78k9shqjgptnal59yszj6lstgxl55");
 
         $data = json_decode( $data, true );

@@ -47,7 +47,7 @@ class Att_public_transactions
 
 
                 require_once plugin_dir_path( dirname( __FILE__ ) ) . '/../common/fetch-data.php';
-                $fetch_data = new Fetch_Data();
+                $fetch_data = new ATTP_Fetch_Data();
                 $data = $fetch_data->get_history($ada_address);
 
                 print_r($data);
