@@ -25,31 +25,53 @@ class Att_admin_transactions
 
 
 
-public function att_menu_my_transactions_OnClick()
+	public function att_menu_my_transactions_OnClick()
 	{
 
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/../common/fetch-data.php';
-		$fetch_data = new ATTP_Fetch_Data();
-		$data = $fetch_data->get_history("addr1qyj7y9d95zdqycpxsu9kyqjxzm7nd0gk2jrqjrnmu9hemclcu29trzjfe76v3y7xvy0lq78k9shqjgptnal59yszj6lstgxl55");
+		$name = "receiving_address";
+		$options = get_option('ada_tracking_option');
+		$receiving_address = isset($options[$name]) ? esc_attr($options[$name]) : '';
 
-        $data = json_decode( $data, true );
 
-		$columns = array(
-            'amount' => 'Amount',
-            'tx_hash' => 'Transaction Hash',
-        );
+		if ($receiving_address == '') {
 
-		// for($i = 0; $i < count($data['rows']); $i++){
-		// 	$data['rows'][$i]['amount'] = 
-		// }
+		} else {
+			require_once plugin_dir_path(dirname(__FILE__)) . '/../common/fetch-data.php';
+			$fetch_data = new ATTP_Fetch_Data();
+			$data = $fetch_data->get_history($receiving_address);
 
-  		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/../common/Custom_Table_List.php';
-		$receiving_addresses_table = new Custom_Table_List($data['rows'], $columns, 15);
-		$receiving_addresses_table->prepare_items();
+			$data = json_decode($data, true);
 
-		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'partials/account/transactions.php';
+			for ($i=0; $i < sizeof($data['rows']); $i++) { 
+
+				$tokenList = "ADA";
+				if($data['rows'][$i]['token'] != 0){
+
+				foreach ($data['rows'][$i]['tokens']['rows'] as $transactionToken) {
+					$tokenList .= "</br>".$fetch_data->formatMoney($transactionToken['quantity'], $transactionToken['decimals']) . " " . $transactionToken['ticker'] . "";
+
+				}
+			}
+			
+			$data['rows'][$i]['amount'] = $fetch_data->formatMoney($data['rows'][$i]['amount'], 6) . ' ' . $tokenList;
+			}
+
+			$columns = array(
+				'amount' => 'Amount',
+				'tx_hash' => 'Transaction Hash',
+				'time' => 'TX time'
+			);
+
+			// for($i = 0; $i < count($data['rows']); $i++){
+			// 	$data['rows'][$i]['amount'] = 
+			// }
+
+			require_once plugin_dir_path(dirname(__FILE__)) . '/../common/Custom_Table_List.php';
+			$receiving_addresses_table = new Custom_Table_List($data['rows'], $columns, 15);
+			$receiving_addresses_table->prepare_items();
+
+			include_once plugin_dir_path(dirname(__FILE__)) . 'partials/account/transactions.php';
+		}
 	}
-
-    
 }

@@ -42,5 +42,25 @@
         // Return the data
         return $body;
     }
+
+    function formatMoney($amount, $decimalPoint) {
+        // Find index of the decimal point
+        $decimalIndex = strlen($amount) - $decimalPoint;
+        // Extract the integer part and the decimal part
+        $integerPart = substr($amount, 0, $decimalIndex);
+        $decimalPart = substr($amount, $decimalIndex);
+    
+        // Insert commas in the integer part
+        $formattedIntegerPart = number_format($integerPart, 0, '', ',');
+        
+        // Remove trailing zeros from the decimal part and add a decimal point
+        $formattedDecimalPart = "." . rtrim($decimalPart, "0");
+        
+        // Concatenate the integer part and decimal part
+        $formattedAmount = $formattedIntegerPart . $formattedDecimalPart;
+        
+        return $formattedAmount;
+    }
+    
     
  }
