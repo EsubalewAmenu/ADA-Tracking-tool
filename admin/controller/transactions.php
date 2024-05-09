@@ -56,6 +56,7 @@ class Att_admin_transactions
 			
 			$data['rows'][$i]['amount'] = $fetch_data->formatMoney($data['rows'][$i]['amount'], 6) . ' ' . $tokenList;
 			$data['rows'][$i]['tx_hash'] = substr($data['rows'][$i]['tx_hash'], 0, 15) . '...';
+			$data['rows'][$i]['time'] = $fetch_data->formatDate($data['rows'][$i]['time']);
 			}
 
 			$columns = array(

@@ -61,6 +61,12 @@
         
         return $formattedAmount;
     }
+    function formatDate($timestamp) {
+        // Convert the timestamp to a DateTime object
+        $date = new DateTime("@$timestamp");
+        // Format the date to a readable string (similar to toLocaleString in JS)
+        return $date->format('Y-m-d H:i:s'); // Adjust the format as needed
+    }
     
     
  }
