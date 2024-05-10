@@ -209,7 +209,8 @@ class Att {
 
 
 
-
+		$Att_admin_transactions = new Att_admin_transactions();
+		$this->loader->add_action('wp_ajax_load_more_transactions', $Att_admin_transactions, 'load_more_transactions');
 
 		add_action('wp_ajax_load_transaction_history', 'load_transaction_history_callback');
 

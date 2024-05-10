@@ -21,13 +21,15 @@
  * @author     Esubalew Amenu <esubalew.a2009@gmail.com>
  */
 
- class ATTP_Fetch_Data {
+class ATTP_Fetch_Data
+{
     private $blockfrost_base_url = 'https://cardano-mainnet.blockfrost.io/api/v0/';
     private $adastat_base_url = 'https://adastat.net/api/rest/v1/';
 
-    function fetch_cardano_transactions($address, $count, $page, $order) {
+    function fetch_cardano_transactions($address, $count, $page, $order)
+    {
         $url = $this->blockfrost_base_url . "addresses/$address/transactions?count=$count&page=$page&order=$order";
-    
+
 
         $name = "blockfrost_api";
         $options = get_option('ada_tracking_option');
@@ -38,79 +40,83 @@
                 'project_id' => $api_key
             )
         );
-    
+
         $response = wp_remote_get($url, $args);
-    
+
         if (is_wp_error($response)) {
             return 'Error retrieving transactions: ' . $response->get_error_message();
         }
-    
+
         $body = wp_remote_retrieve_body($response);
-    
+
         if (empty($body)) {
             return 'No transactions found for the specified period.';
         }
-    
+
         return $body;
     }
-    function get_transactions($receiving_address, $count, $page, $order){
+    function get_transactions($receiving_address, $count, $page, $order)
+    {
 
-			$data = self::fetch_cardano_transactions($receiving_address, $count, $page, $order);
+        $data = self::fetch_cardano_transactions($receiving_address, $count, $page, $order);
 
-			$data = json_decode($data, true);
+        $data = json_decode($data, true);
 
-			for ($i = 0; $i < sizeof($data); $i++) {
+        for ($i = 0; $i < sizeof($data); $i++) {
 
-				$transaction_data = self::fetch_transaction_details($data[$i]['tx_hash']);
+            $transaction_data = self::fetch_transaction_details($data[$i]['tx_hash']);
 
-				$transaction_data = json_decode($transaction_data, true);
-				$result = self::determine_transaction_type($transaction_data, $receiving_address);
-			
-				$token_amounts = "";
-				for ($j=0; $j < sizeof($result['transaction_tokens']); $j++) { 
-					if($token_amounts != "") {$token_amounts .= "<br>";}
-					if($result['is_incoming']){
-						$token_amounts .= self::formatMoney($result['transaction_tokens'][$j]['amount'], $result['transaction_tokens'][$j]['decimals']) . ' ' . $result['transaction_tokens'][$j]['ticker'];
-					}else{
-						$token_amounts .= '-'.self::formatMoney($result['transaction_tokens'][$j]['amount'], $result['transaction_tokens'][$j]['decimals']) . ' ' . $result['transaction_tokens'][$j]['ticker'];
-					}
-				}
-	
-				$data[$i]['is_incoming'] = $result['is_incoming'] ? "true" : "false" ;
-				$data[$i]['amount'] = $token_amounts;
-				$data[$i]['tx_hash'] = substr($data[$i]['tx_hash'], 0, 15) . '...';
-				$data[$i]['time'] = $result['transaction_time'];
-				$data[$i]['message'] = $result['message'];
-				$data[$i]['confirmation'] = $result['confirmation'];
-			}
-            return $data;
+            $transaction_data = json_decode($transaction_data, true);
+            $result = self::determine_transaction_type($transaction_data, $receiving_address);
+
+            $token_amounts = "";
+            for ($j = 0; $j < sizeof($result['transaction_tokens']); $j++) {
+                if ($token_amounts != "") {
+                    $token_amounts .= "<br>";
+                }
+                if ($result['is_incoming']) {
+                    $token_amounts .= self::formatMoney($result['transaction_tokens'][$j]['amount'], $result['transaction_tokens'][$j]['decimals']) . ' ' . $result['transaction_tokens'][$j]['ticker'];
+                } else {
+                    $token_amounts .= '-' . self::formatMoney($result['transaction_tokens'][$j]['amount'], $result['transaction_tokens'][$j]['decimals']) . ' ' . $result['transaction_tokens'][$j]['ticker'];
+                }
+            }
+
+            $data[$i]['is_incoming'] = $result['is_incoming'] ? "true" : "false";
+            $data[$i]['amount'] = $token_amounts;
+            $data[$i]['tx_hash'] = substr($data[$i]['tx_hash'], 0, 15) . '...';
+            $data[$i]['time'] = $result['transaction_time'];
+            $data[$i]['message'] = $result['message'];
+            $data[$i]['confirmation'] = $result['confirmation'];
+        }
+        return $data;
     }
-    
-    function fetch_transaction_details($tx_hash) {
+
+    function fetch_transaction_details($tx_hash)
+    {
         $url = $this->adastat_base_url . "transactions/$tx_hash.json?currency=usd";
-    
+
         $args = array(
-            'headers' => array(
-            )
+            'headers' => array()
         );
-    
+
         $response = wp_remote_get($url, $args);
         if (is_wp_error($response)) {
             return 'Error retrieving transaction details: ' . $response->get_error_message();
         }
-    
+
         $body = wp_remote_retrieve_body($response);
-    
+
         return $body;
     }
 
 
 
-    function determine_transaction_type($transaction_data, $my_address) {
+    function determine_transaction_type($transaction_data, $my_address)
+    {
         $inputs = $transaction_data['data']['inputs']['rows'];
         $outputs = $transaction_data['data']['outputs']['rows'];
         $metadata = $transaction_data['data']['metadata']['rows'];
-    
+
         $transaction_details = [
             'is_incoming' => false,
             'transaction_time' => date('Y-m-d H:i:s', $transaction_data['data']['time']),
@@ -120,7 +126,7 @@
             'message' => null
 
         ];
-    
+
         // Extracting "msg" from metadata if available
         foreach ($metadata as $data) {
             if (isset($data['data']['msg'])) {
@@ -137,7 +143,7 @@
                 break;
             }
         }
-    
+
         // If the address is only in inputs, it's purely an outgoing transaction
         if (!$is_outgoing) {
             $transaction_details['is_incoming'] = true;
@@ -146,7 +152,7 @@
         // Check for incoming transactions and gather token details
         foreach ($outputs as $output) {
             if ($is_outgoing) {
-            
+
                 if ($output['address'] !== $my_address) {
                     // Check if tokens are involved in the output
                     if ($output['token']) {
@@ -163,10 +169,8 @@
                         'amount' => $output['amount'],
                         'decimals' => 6  // ADA has 6 decimal places
                     ];
-                    
                 }
-
-            }else{
+            } else {
                 if ($output['address'] === $my_address) {
                     // Check if tokens are involved in the output
                     if ($output['token']) {
@@ -177,43 +181,40 @@
                                 'decimals' => $token['decimals'] ?? 0
                             ];
                         }
-                    } else {
-                        // If no tokens, treat it as a pure ADA transaction
-                        $transaction_details['transaction_tokens'][] = [
-                            'ticker' => 'ADA',
-                            'amount' => $output['amount'],
-                            'decimals' => 6  // ADA has 6 decimal places
-                        ];
                     }
+                    $transaction_details['transaction_tokens'][] = [
+                        'ticker' => 'ADA',
+                        'amount' => $output['amount'],
+                        'decimals' => 6  // ADA has 6 decimal places
+                    ];
                 }
             }
         }
-    
-    
+
+
         return $transaction_details;
     }
-    
 
 
-    
-    function formatMoney($amount, $decimalPoint) {
+
+
+    function formatMoney($amount, $decimalPoint)
+    {
         // Find index of the decimal point
         $decimalIndex = strlen($amount) - $decimalPoint;
         // Extract the integer part and the decimal part
         $integerPart = substr($amount, 0, $decimalIndex);
         $decimalPart = substr($amount, $decimalIndex);
-    
+
         // Insert commas in the integer part
         $formattedIntegerPart = number_format($integerPart, 0, '', ',');
-        
+
         // Remove trailing zeros from the decimal part and add a decimal point
         $formattedDecimalPart = "." . rtrim($decimalPart, "0");
-        
+
         // Concatenate the integer part and decimal part
         $formattedAmount = $formattedIntegerPart . $formattedDecimalPart;
-        
+
         return $formattedAmount;
     }
-    
-    
- }
+}
