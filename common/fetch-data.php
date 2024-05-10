@@ -83,7 +83,7 @@ class ATTP_Fetch_Data
 
             $data[$i]['is_incoming'] = $result['is_incoming'] ? "true" : "false";
             $data[$i]['amount'] = $token_amounts;
-            $data[$i]['tx_hash'] = substr($data[$i]['tx_hash'], 0, 15) . '...';
+            $data[$i]['tx_hash'] = $data[$i]['tx_hash'];
             $data[$i]['time'] = $result['transaction_time'];
             $data[$i]['message'] = $result['message'];
             $data[$i]['confirmation'] = $result['confirmation'];

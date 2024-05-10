@@ -43,7 +43,7 @@ function handleChange(selector) {
 					action: 'load_more_transactions',
 					page: page,
 					count: document.getElementById('tx-per-page').value,
-					security: '<?php echo wp_create_nonce("load_more_transactions"); ?>'
+					security: '<?php echo esc_attr(wp_create_nonce("load_more_transactions")); ?>'
 				},
 				success: function(response) {
 					if (response.success) {
