@@ -35,42 +35,28 @@ class Att_admin_transactions
 
 
 		if ($receiving_address == '') {
-
 		} else {
 			require_once plugin_dir_path(dirname(__FILE__)) . '/../common/fetch-data.php';
 			$fetch_data = new ATTP_Fetch_Data();
-			$data = $fetch_data->get_history($receiving_address);
 
-			$data = json_decode($data, true);
+			$count = 5;
+			$page = 1;
+			$order = 'desc';
 
-			for ($i=0; $i < sizeof($data['rows']); $i++) { 
-
-				$tokenList = "ADA";
-				if($data['rows'][$i]['token'] != 0){
-
-				foreach ($data['rows'][$i]['tokens']['rows'] as $transactionToken) {
-					$tokenList .= "</br>".$fetch_data->formatMoney($transactionToken['quantity'], $transactionToken['decimals']) . " " . $transactionToken['ticker'] . "";
-
-				}
-			}
-			
-			$data['rows'][$i]['amount'] = $fetch_data->formatMoney($data['rows'][$i]['amount'], 6) . ' ' . $tokenList;
-			$data['rows'][$i]['tx_hash'] = substr($data['rows'][$i]['tx_hash'], 0, 15) . '...';
-			$data['rows'][$i]['time'] = $fetch_data->formatDate($data['rows'][$i]['time']);
-			}
+			$data = $fetch_data->get_transactions($receiving_address, $count, $page, $order);
 
 			$columns = array(
+				'is_incoming' => 'Is incoming',
 				'amount' => 'Amount',
 				'tx_hash' => 'Transaction Hash',
-				'time' => 'TX time'
+				'time' => 'TX time',
+				'message' => 'Message',
+				'confirmation' => 'TX confirmation',
 			);
 
-			// for($i = 0; $i < count($data['rows']); $i++){
-			// 	$data['rows'][$i]['amount'] = 
-			// }
 
 			require_once plugin_dir_path(dirname(__FILE__)) . '/../common/Custom_Table_List.php';
-			$receiving_addresses_table = new Custom_Table_List($data['rows'], $columns, 15);
+			$receiving_addresses_table = new Custom_Table_List($data, $columns, 15);
 			$receiving_addresses_table->prepare_items();
 
 			include_once plugin_dir_path(dirname(__FILE__)) . 'partials/account/transactions.php';

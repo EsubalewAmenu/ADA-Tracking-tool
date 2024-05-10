@@ -22,27 +22,180 @@
  */
 
  class ATTP_Fetch_Data {
-    private $base_url = 'https://adastat.net/api/rest/v1/';
+    private $blockfrost_base_url = 'https://cardano-mainnet.blockfrost.io/api/v0/';
+    private $adastat_base_url = 'https://adastat.net/api/rest/v1/';
 
-    function get_history($address) {
-        $params = ".json?rows=history&dir=desc&limit=24&currency=usd";
-        $api_url = $this->base_url . "addresses/" . $address . $params;
+    function fetch_cardano_transactions($address, $count, $page, $order) {
+        $url = $this->blockfrost_base_url . "addresses/$address/transactions?count=$count&page=$page&order=$order";
     
-        // Make the request
-        $response = wp_remote_get( $api_url );
+
+        $name = "blockfrost_api";
+        $options = get_option('ada_tracking_option');
+        $api_key = isset($options[$name]) ? esc_attr($options[$name]) : '';
+
+        $args = array(
+            'headers' => array(
+                'project_id' => $api_key
+            )
+        );
     
-        // Check for errors
-        if ( is_wp_error( $response ) ) {
-            return false; // Handle error accordingly
+        $response = wp_remote_get($url, $args);
+    
+        if (is_wp_error($response)) {
+            return 'Error retrieving transactions: ' . $response->get_error_message();
         }
     
-        // Get the response body
-        $body = wp_remote_retrieve_body( $response );
+        $body = wp_remote_retrieve_body($response);
     
-        // Return the data
+        if (empty($body)) {
+            return 'No transactions found for the specified period.';
+        }
+    
+        return $body;
+    }
+    function get_transactions($receiving_address, $count, $page, $order){
+
+			$data = self::fetch_cardano_transactions($receiving_address, $count, $page, $order);
+
+			$data = json_decode($data, true);
+
+			for ($i = 0; $i < sizeof($data); $i++) {
+
+				$transaction_data = self::fetch_transaction_details($data[$i]['tx_hash']);
+
+				$transaction_data = json_decode($transaction_data, true);
+				$result = self::determine_transaction_type($transaction_data, $receiving_address);
+			
+				$token_amounts = "";
+				for ($j=0; $j < sizeof($result['transaction_tokens']); $j++) { 
+					if($token_amounts != "") {$token_amounts .= "<br>";}
+					if($result['is_incoming']){
+						$token_amounts .= self::formatMoney($result['transaction_tokens'][$j]['amount'], $result['transaction_tokens'][$j]['decimals']) . ' ' . $result['transaction_tokens'][$j]['ticker'];
+					}else{
+						$token_amounts .= '-'.self::formatMoney($result['transaction_tokens'][$j]['amount'], $result['transaction_tokens'][$j]['decimals']) . ' ' . $result['transaction_tokens'][$j]['ticker'];
+					}
+				}
+	
+				$data[$i]['is_incoming'] = $result['is_incoming'] ? "true" : "false" ;
+				$data[$i]['amount'] = $token_amounts;
+				$data[$i]['tx_hash'] = substr($data[$i]['tx_hash'], 0, 15) . '...';
+				$data[$i]['time'] = $result['transaction_time'];
+				$data[$i]['message'] = $result['message'];
+				$data[$i]['confirmation'] = $result['confirmation'];
+			}
+            return $data;
+    }
+    
+    function fetch_transaction_details($tx_hash) {
+        $url = $this->adastat_base_url . "transactions/$tx_hash.json?currency=usd";
+    
+        $args = array(
+            'headers' => array(
+            )
+        );
+    
+        $response = wp_remote_get($url, $args);
+        if (is_wp_error($response)) {
+            return 'Error retrieving transaction details: ' . $response->get_error_message();
+        }
+    
+        $body = wp_remote_retrieve_body($response);
+    
         return $body;
     }
 
+
+
+    function determine_transaction_type($transaction_data, $my_address) {
+        $inputs = $transaction_data['data']['inputs']['rows'];
+        $outputs = $transaction_data['data']['outputs']['rows'];
+        $metadata = $transaction_data['data']['metadata']['rows'];
+    
+        $transaction_details = [
+            'is_incoming' => false,
+            'transaction_time' => date('Y-m-d H:i:s', $transaction_data['data']['time']),
+            'tx_hash' => $transaction_data['data']['hash'],
+            'transaction_tokens' => [],
+            'confirmation' => $transaction_data['data']['confirmation'],
+            'message' => null
+
+        ];
+    
+        // Extracting "msg" from metadata if available
+        foreach ($metadata as $data) {
+            if (isset($data['data']['msg'])) {
+                $transaction_details['message'] = implode(", ", $data['data']['msg']); // Join messages if there are multiple
+                break; // Stop after finding the first relevant message
+            }
+        }
+
+        // Check for outgoing transactions by seeing if the address is in the inputs
+        $is_outgoing = false;
+        foreach ($inputs as $input) {
+            if ($input['address'] === $my_address) {
+                $is_outgoing = true;
+                break;
+            }
+        }
+    
+        // If the address is only in inputs, it's purely an outgoing transaction
+        if (!$is_outgoing) {
+            $transaction_details['is_incoming'] = true;
+        }
+
+        // Check for incoming transactions and gather token details
+        foreach ($outputs as $output) {
+            if ($is_outgoing) {
+            
+                if ($output['address'] !== $my_address) {
+                    // Check if tokens are involved in the output
+                    if ($output['token']) {
+                        foreach ($output['tokens'] as $token) {
+                            $transaction_details['transaction_tokens'][] = [
+                                'ticker' => $token['ticker'] ?? 'ADA',
+                                'amount' => $token['quantity'],
+                                'decimals' => $token['decimals'] ?? 0
+                            ];
+                        }
+                    }
+                    $transaction_details['transaction_tokens'][] = [
+                        'ticker' => 'ADA',
+                        'amount' => $output['amount'],
+                        'decimals' => 6  // ADA has 6 decimal places
+                    ];
+                    
+                }
+
+            }else{
+                if ($output['address'] === $my_address) {
+                    // Check if tokens are involved in the output
+                    if ($output['token']) {
+                        foreach ($output['tokens'] as $token) {
+                            $transaction_details['transaction_tokens'][] = [
+                                'ticker' => $token['ticker'] ?? 'ADA',
+                                'amount' => $token['quantity'],
+                                'decimals' => $token['decimals'] ?? 0
+                            ];
+                        }
+                    } else {
+                        // If no tokens, treat it as a pure ADA transaction
+                        $transaction_details['transaction_tokens'][] = [
+                            'ticker' => 'ADA',
+                            'amount' => $output['amount'],
+                            'decimals' => 6  // ADA has 6 decimal places
+                        ];
+                    }
+                }
+            }
+        }
+    
+    
+        return $transaction_details;
+    }
+    
+
+
+    
     function formatMoney($amount, $decimalPoint) {
         // Find index of the decimal point
         $decimalIndex = strlen($amount) - $decimalPoint;
@@ -60,12 +213,6 @@
         $formattedAmount = $formattedIntegerPart . $formattedDecimalPart;
         
         return $formattedAmount;
-    }
-    function formatDate($timestamp) {
-        // Convert the timestamp to a DateTime object
-        $date = new DateTime("@$timestamp");
-        // Format the date to a readable string (similar to toLocaleString in JS)
-        return $date->format('Y-m-d H:i:s'); // Adjust the format as needed
     }
     
     
