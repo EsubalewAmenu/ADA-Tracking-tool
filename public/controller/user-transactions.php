@@ -31,6 +31,15 @@ class Att_public_transactions
 
                 wp_enqueue_style('att-transaction-history-style', plugin_dir_url(__FILE__) . '../css/att-public-transaction-history.css', false, '1.0', 'all');
 
+
+                if (isset($_GET['count']) && !empty(esc_attr($_GET['count']))) {
+                        $attp_tx_per_page = esc_attr($_GET['count']);
+                } else {
+                        $name = "attp_tx_per_page";
+                        $options = get_option('ada_tracking_option');
+                        $attp_tx_per_page = isset($options[$name]) ? esc_attr($options[$name]) : 5;
+                }
+
                 include_once plugin_dir_path(dirname(__FILE__)) . 'partials/user-transactions.php';
 
                 return ob_get_clean();

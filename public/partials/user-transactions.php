@@ -45,6 +45,13 @@
     var page = 1;
     const tableBody = document.querySelector('#transaction-table-body');
 
+    function handleChange(selector) {
+        var value = selector.value;
+        var currentUrl = new URL(window.location.href);
+        currentUrl.searchParams.set('count', value); // Set or update the 'count' parameter
+        window.location.href = currentUrl.toString(); // Reloads the page with updated URL
+    }
+
     jQuery(document).ready(function($) {
 
         var $loadMoreBtn = $('#load-more'); // Cache the button for easier and repeated access
@@ -59,7 +66,7 @@
                         action: 'load_transaction_history',
                         page: page,
                         ada_address: ada_address,
-                        count: 1, //document.getElementById('tx-per-page').value,
+                        count: document.getElementById('tx-per-page').value,
                         security: '<?php echo esc_attr(wp_create_nonce("load_transaction_history_nonce")); ?>'
                     },
                     success: function(response) {
