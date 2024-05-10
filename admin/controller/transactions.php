@@ -54,11 +54,11 @@ class Att_admin_transactions
 
 			if (isset($_GET['count']) && !empty(esc_attr($_GET['count']))) {
 				$attp_tx_per_page = esc_attr($_GET['count']);
-			}else{
-				$options = get_option('attp_tx_per_page');
-				$attp_tx_per_page = isset($options) ? esc_attr($options) : 5;
+			} else {
+				$name = "attp_tx_per_page";
+				$options = get_option('ada_tracking_option');
+				$attp_tx_per_page = isset($options[$name]) ? esc_attr($options[$name]) : 5;
 			}
-
 			include_once plugin_dir_path(dirname(__FILE__)) . 'partials/account/transactions.php';
 		}
 	}
