@@ -185,6 +185,34 @@ class Att_admin_settings
             'ada-tracking-plugin',
             'ada_tracking_settings_section'
         );
+
+        add_settings_field(
+            "attp_tx_per_page",
+            'TX per page',
+            function () {
+                $name = "attp_tx_per_page";
+                $description = 'Default number of transactions that will be loaded per page';
+
+
+                $options = get_option('ada_tracking_option');
+                $value = isset($options[$name]) ? esc_attr($options[$name]) : ''; ?>
+
+
+            <select name="ada_tracking_option[<?php echo esc_attr($name) ?>]">
+                <option value="1" <?php if ($value == 1) echo esc_attr('selected'); ?>>1</option>
+                <option value="5" <?php if ($value == 5) echo esc_attr('selected'); ?>>5</option>
+                <option value="10" <?php if ($value == 10) echo esc_attr('selected'); ?>>10</option>
+                <option value="25" <?php if ($value == 25) echo esc_attr('selected'); ?>>25</option>
+                <option value="50" <?php if ($value == 50) echo esc_attr('selected'); ?>>50</option>
+                <option value="100" <?php if ($value == 100) echo esc_attr('selected'); ?>>100</option>
+            </select>
+
+            <p class="description"><?php echo esc_attr($description) ?></p>
+        <?php
+            },
+            'ada-tracking-plugin',
+            'ada_tracking_settings_section'
+        );
         ////////////////////////////////////////////////////////////////////////////////////
 
         add_settings_field(
@@ -200,7 +228,7 @@ class Att_admin_settings
             <input type="datetime-local" name="ada_tracking_option[<?php echo esc_attr($name) ?>]" value="<?php echo esc_attr($value) ?>" />
 
             <p class="description"><?php echo esc_attr($description) ?></p>
-        <?php
+<?php
             },
             'ada-tracking-plugin',
             'ada_tracking_settings_section'
