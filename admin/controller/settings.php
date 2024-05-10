@@ -217,15 +217,15 @@ class Att_admin_settings
 
         add_settings_field(
             "last_synced",
-            'Last Transaction Synced',
+            'Last Synced TX block',
             function () {
-                $name = "last_synced";
-                $description = 'Incoming transactions will synced starting from the above metioned date.';
+                $name = "last_synced_block";
+                $description = 'Incoming transactions will be synced starting from the above metioned block.';
 
 
                 $options = get_option('ada_tracking_option');
-                $value = isset($options[$name]) ? esc_attr($options[$name]) : ''; ?>
-            <input type="datetime-local" name="ada_tracking_option[<?php echo esc_attr($name) ?>]" value="<?php echo esc_attr($value) ?>" />
+                $value = isset($options[$name]) ? esc_attr($options[$name]) : '0'; ?>
+            <input type="number" name="ada_tracking_option[<?php echo esc_attr($name) ?>]" value="<?php echo esc_attr($value) ?>" />
 
             <p class="description"><?php echo esc_attr($description) ?></p>
 <?php
