@@ -126,17 +126,41 @@ class Att_admin_cron_schedule
 
         $name = "receiving_address";
         $options = get_option('ada_tracking_option');
-        $value = isset($options[$name]) ? esc_attr($options[$name]) : '';
+        $receiving_address = isset($options[$name]) ? esc_attr($options[$name]) : '';
 
 
-        if($value != ''){
+        if ($receiving_address != '') {
             include_once plugin_dir_path(dirname(__FILE__)) . '../common/fetch-data.php';
             $ATTP_Fetch_Data = new ATTP_Fetch_Data();
-            $result = $ATTP_Fetch_Data->get_history($value);
 
+
+            $count = 2;
+            $page = 1;
+            $order = "asc";
+            $block = isset($options["last_synced_block"]) ? esc_attr($options["last_synced_block"]) : '0';
+            $data = $ATTP_Fetch_Data->get_transactions($receiving_address, $count, $page, $order, $block);
+
+            if (is_array($data)) {
+                echo "size of data is ";
+                for ($i = 0; $i < sizeof($data); $i++) {
+                    $block_height = $data[$i]['block_height'];
+
+                    $options = get_option('ada_tracking_option');
+
+                    $last_synced_block = isset($options["last_synced_block"]) ? esc_attr($options["last_synced_block"]) : '0';
+                    if ($block_height > $last_synced_block) {
+                        
+
+
+
+
+                        $options['last_synced_block'] = $block_height;
+                        update_option('ada_tracking_option', $options);
+
+                    }
+                }
+            }
         }
-     
-        add_option('test_cron_task', current_time('timestamp'));
     }
 
 

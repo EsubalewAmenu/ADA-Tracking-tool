@@ -60,8 +60,7 @@ class ATTP_Fetch_Data
 
         $data = self::fetch_cardano_transactions($receiving_address, $count, $page, $order);
 
-        if (is_array($data)) {
-            $data = json_decode($data, true);
+        if ($data = json_decode($data, true)) {
             for ($i = 0; $i < sizeof($data); $i++) {
 
                 $transaction_data = self::fetch_transaction_details($data[$i]['tx_hash']);
