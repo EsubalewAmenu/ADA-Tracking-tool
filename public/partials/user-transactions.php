@@ -59,20 +59,18 @@
         function fetchTransactionHistory() {
             $loadMoreBtn.text('Loading...').attr('disabled', true); // Change button text and disable it
 
-                jQuery.ajax({
-                    url: ajaxurl,
-                    type: 'POST',
-                    data: {
-                        action: 'load_transaction_history',
-                        page: page,
-                        ada_address: ada_address,
-                        count: document.getElementById('tx-per-page').value,
-                        security: '<?php echo esc_attr(wp_create_nonce("load_transaction_history_nonce")); ?>'
-                    },
-                    success: function(response) {
-                        console.log("response started");
-                        console.log(response);
-                        console.log("response done");
+            jQuery.ajax({
+                url: ajaxurl,
+                type: 'POST',
+                data: {
+                    action: 'load_transaction_history',
+                    page: page,
+                    ada_address: ada_address,
+                    count: document.getElementById('tx-per-page').value,
+                    security: '<?php echo esc_attr(wp_create_nonce("load_transaction_history_nonce")); ?>'
+                },
+                success: function(response) {
+                    try {
 
                         const res = JSON.parse(response)
                         res.forEach(item => {
@@ -88,16 +86,19 @@
                         });
                         fetchedHistoryData.style.display = 'block';
                         page++; // Only increment the page if the load was successful
-                        //////////////
-                        $loadMoreBtn.text('Load More').attr('disabled', false); // Reset button text and re-enable
-                    },
-                    error: function() {
-                        alert('Error loading more transactions.');
-                        $loadMoreBtn.text('Load More').attr('disabled', false); // Reset button text and re-enable
+                    } catch (e) {
+                        // Handle errors in parsing JSON
+                        alert('Failed to parse transaction data. ' + response);
                     }
-                });
+                    $loadMoreBtn.text('Load More').attr('disabled', false); // Reset button text and re-enable
+                },
+                error: function() {
+                    alert('Error loading more transactions.');
+                    $loadMoreBtn.text('Load More').attr('disabled', false); // Reset button text and re-enable
+                }
+            });
 
-            
+
 
         }
 

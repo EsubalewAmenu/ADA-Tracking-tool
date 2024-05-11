@@ -81,7 +81,7 @@ class Att_admin_transactions
 		$fetch_data = new ATTP_Fetch_Data();
 		$data = $fetch_data->get_transactions($receiving_address, $count, $page, $order);
 
-		if (!empty($data)) {
+		if (is_array($data)) {
 			require_once plugin_dir_path(dirname(__FILE__)) . '/../common/Custom_Table_List.php';
 			$columns = array(
 				'is_incoming' => 'Is incoming',
@@ -99,7 +99,7 @@ class Att_admin_transactions
 			$rows = ob_get_clean();
 			wp_send_json_success(array('rows' => $rows));
 		} else {
-			wp_send_json_error(array('message' => 'No more transactions'));
+			wp_send_json_error(array('message' => $data));
 		}
 	}
 }

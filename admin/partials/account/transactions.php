@@ -54,12 +54,12 @@ function handleChange(selector) {
 						$('#the-list').append(response.data.rows); // Append new rows
 						page++; // Only increment the page if the load was successful
 					} else {
-						alert(response.data.message); // Alert if no more data or error message from server
+						alert(JSON.stringify(response.data)); // Alert if no more data or error message from server
 					}
 					$loadMoreBtn.text('Load More').prop('disabled', false); // Reset button text and re-enable
 				},
-				error: function() {
-					alert('Error loading more transactions.');
+				error: function(response) {
+					alert('Failed to parse transaction data. ' + response.data.message);
 					$loadMoreBtn.text('Load More').prop('disabled', false); // Reset button text and re-enable even if error occurs
 				}
 			});

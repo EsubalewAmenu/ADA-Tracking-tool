@@ -60,33 +60,34 @@ class ATTP_Fetch_Data
 
         $data = self::fetch_cardano_transactions($receiving_address, $count, $page, $order);
 
-        $data = json_decode($data, true);
+        if (is_array($data)) {
+            $data = json_decode($data, true);
+            for ($i = 0; $i < sizeof($data); $i++) {
 
-        for ($i = 0; $i < sizeof($data); $i++) {
+                $transaction_data = self::fetch_transaction_details($data[$i]['tx_hash']);
 
-            $transaction_data = self::fetch_transaction_details($data[$i]['tx_hash']);
+                $transaction_data = json_decode($transaction_data, true);
+                $result = self::determine_transaction_type($transaction_data, $receiving_address);
 
-            $transaction_data = json_decode($transaction_data, true);
-            $result = self::determine_transaction_type($transaction_data, $receiving_address);
-
-            $token_amounts = "";
-            for ($j = 0; $j < sizeof($result['transaction_tokens']); $j++) {
-                if ($token_amounts != "") {
-                    $token_amounts .= "<br>";
+                $token_amounts = "";
+                for ($j = 0; $j < sizeof($result['transaction_tokens']); $j++) {
+                    if ($token_amounts != "") {
+                        $token_amounts .= "<br>";
+                    }
+                    if ($result['is_incoming']) {
+                        $token_amounts .= self::formatMoney($result['transaction_tokens'][$j]['amount'], $result['transaction_tokens'][$j]['decimals']) . ' ' . $result['transaction_tokens'][$j]['ticker'];
+                    } else {
+                        $token_amounts .= '-' . self::formatMoney($result['transaction_tokens'][$j]['amount'], $result['transaction_tokens'][$j]['decimals']) . ' ' . $result['transaction_tokens'][$j]['ticker'];
+                    }
                 }
-                if ($result['is_incoming']) {
-                    $token_amounts .= self::formatMoney($result['transaction_tokens'][$j]['amount'], $result['transaction_tokens'][$j]['decimals']) . ' ' . $result['transaction_tokens'][$j]['ticker'];
-                } else {
-                    $token_amounts .= '-' . self::formatMoney($result['transaction_tokens'][$j]['amount'], $result['transaction_tokens'][$j]['decimals']) . ' ' . $result['transaction_tokens'][$j]['ticker'];
-                }
+
+                $data[$i]['is_incoming'] = $result['is_incoming'] ? "true" : "false";
+                $data[$i]['amount'] = $token_amounts;
+                $data[$i]['tx_hash'] = $data[$i]['tx_hash'];
+                $data[$i]['time'] = $result['transaction_time'];
+                $data[$i]['message'] = $result['message'];
+                $data[$i]['confirmation'] = $result['confirmation'];
             }
-
-            $data[$i]['is_incoming'] = $result['is_incoming'] ? "true" : "false";
-            $data[$i]['amount'] = $token_amounts;
-            $data[$i]['tx_hash'] = $data[$i]['tx_hash'];
-            $data[$i]['time'] = $result['transaction_time'];
-            $data[$i]['message'] = $result['message'];
-            $data[$i]['confirmation'] = $result['confirmation'];
         }
         return $data;
     }
