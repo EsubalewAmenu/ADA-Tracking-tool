@@ -8,7 +8,7 @@
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
- * @link              https:///github.com/EsubalewAmenu
+ * @link              https://github.com/EsubalewAmenu
  * @since             1.0.0
  * @package           Att
  *
@@ -18,7 +18,7 @@
  * Description:       ADA Tracking tool
  * Version:           1.0.0
  * Author:            Esubalew A
- * Author URI:        https:///github.com/EsubalewAmenu/
+ * Author URI:        https://github.com/EsubalewAmenu/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       att

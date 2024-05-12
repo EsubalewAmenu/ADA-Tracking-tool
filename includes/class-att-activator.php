@@ -3,7 +3,7 @@
 /**
  * Fired during plugin activation
  *
- * @link       https:///github.com/EsubalewAmenu
+ * @link       https://github.com/EsubalewAmenu
  * @since      1.0.0
  *
  * @package    Att

@@ -3,7 +3,7 @@
 /**
  * Register all actions and filters for the plugin
  *
- * @link       https:///github.com/EsubalewAmenu
+ * @link       https://github.com/EsubalewAmenu
  * @since      1.0.0
  *
  * @package    Att
