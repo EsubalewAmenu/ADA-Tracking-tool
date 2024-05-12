@@ -127,36 +127,37 @@ class Att_admin_cron_schedule
         $name = "receiving_address";
         $options = get_option('ada_tracking_option');
         $receiving_address = isset($options[$name]) ? esc_attr($options[$name]) : '';
+        $ATTP_mail_templete_post_type_Admin = new ATTP_mail_templete_post_type_Admin();
 
-
+        // $receiving_address = '';
         if ($receiving_address != '') {
             include_once plugin_dir_path(dirname(__FILE__)) . '../common/fetch-data.php';
             $ATTP_Fetch_Data = new ATTP_Fetch_Data();
 
 
-            $count = 2;
+
+			
+			$count = isset($options["attp_tx_per_page"]) ? esc_attr($options["attp_tx_per_page"]) : 10;			
             $page = 1;
             $order = "asc";
             $block = isset($options["last_synced_block"]) ? esc_attr($options["last_synced_block"]) : '0';
             $data = $ATTP_Fetch_Data->get_transactions($receiving_address, $count, $page, $order, $block);
 
             if (is_array($data)) {
-                echo "size of data is ";
                 for ($i = 0; $i < sizeof($data); $i++) {
                     $block_height = $data[$i]['block_height'];
 
-                    $options = get_option('ada_tracking_option');
 
+                    $notif_email_address = isset($options['notif_email_address']) ? esc_attr($options['notif_email_address']) : '';
+                    $bodyReplacements['site_admin_name'] = "test_site_admin_name";
+                    $ATTP_mail_templete_post_type_Admin->template($notif_email_address, 'new-transaction-templete', $data, $bodyReplacements);
+
+
+                    $options = get_option('ada_tracking_option');
                     $last_synced_block = isset($options["last_synced_block"]) ? esc_attr($options["last_synced_block"]) : '0';
                     if ($block_height > $last_synced_block) {
-                        
-
-
-
-
                         $options['last_synced_block'] = $block_height;
                         update_option('ada_tracking_option', $options);
-
                     }
                 }
             }
