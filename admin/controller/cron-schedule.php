@@ -145,14 +145,6 @@ class Att_admin_cron_schedule
                 $block_height = $data[(sizeof($data) - 1)]['block_height'];
                 $tx_index = $data[(sizeof($data) - 1)]['tx_index'];
 
-                $last_synced_block = isset($options["last_synced_block"]) ? esc_attr($options["last_synced_block"]) : '0';
-                $last_synced_tx_index = isset($options["last_synced_tx_index"]) ? esc_attr($options["last_synced_tx_index"]) : '0';
-                if ($block_height > $last_synced_block || ($block_height == $last_synced_block && $tx_index > $last_synced_tx_index)) {
-                    $options['last_synced_block'] = $block_height;
-                    $options['last_synced_tx_index'] = $last_synced_tx_index;
-                    update_option('ada_tracking_option', $options);
-                }
-
 
                 $prefix_filter_cb = isset($options["prefix_filter_cb"]) && $options["prefix_filter_cb"] === 'on' ? true : false;
                 $prefix_filter = isset($options["prefix_filter"]) ? esc_attr($options["prefix_filter"]) : '';
@@ -163,13 +155,25 @@ class Att_admin_cron_schedule
 
                 $removable_tx_indexs = array();
                 for ($single_tx_index = 0; $single_tx_index < sizeof($data); $single_tx_index++) {
-                    $message = $data[$single_tx_index]['message'] != null ? $data[$single_tx_index]['message'] : '';
 
-                    if ($prefix_filter_cb && substr($message, 0, strlen($prefix_filter)) !== $prefix_filter) {
-                        $removable_tx_indexs[] = $single_tx_index;
-                    }
 
-                    if ($suffix_filter_cb && substr($message, -strlen($suffix_filter)) !== $suffix_filter) {
+                    $options = get_option('ada_tracking_option');
+                    $last_synced_block = isset($options["last_synced_block"]) ? esc_attr($options["last_synced_block"]) : '0';
+                    $last_synced_tx_index = isset($options["last_synced_tx_index"]) ? esc_attr($options["last_synced_tx_index"]) : '0';
+                    if ($block_height > $last_synced_block || ($block_height == $last_synced_block && $tx_index > $last_synced_tx_index)) {
+                        $options['last_synced_block'] = $block_height;
+                        $options['last_synced_tx_index'] = $last_synced_tx_index;
+                        update_option('ada_tracking_option', $options);
+
+
+                        $message = $data[$single_tx_index]['message'] != null ? $data[$single_tx_index]['message'] : '';
+
+                        if ($prefix_filter_cb && substr($message, 0, strlen($prefix_filter)) !== $prefix_filter) {
+                            $removable_tx_indexs[] = $single_tx_index;
+                        }else if ($suffix_filter_cb && substr($message, -strlen($suffix_filter)) !== $suffix_filter) {
+                            $removable_tx_indexs[] = $single_tx_index;
+                        }
+                    }else{
                         $removable_tx_indexs[] = $single_tx_index;
                     }
                 }
@@ -179,7 +183,7 @@ class Att_admin_cron_schedule
 
                 if ($data) {
                     $notif_email_address = isset($options['notif_email_address']) ? esc_attr($options['notif_email_address']) : '';
-                    $bodyReplacements['site_admin_name'] = "test_site_admin_name";
+                    $bodyReplacements['site_admin_name'] = get_option('blogname');
                     $ATTP_mail_templete_post_type_Admin->template($notif_email_address, 'new-transaction-templete', $data, $bodyReplacements);
                 }
             }
