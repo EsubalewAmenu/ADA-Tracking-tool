@@ -147,12 +147,6 @@ class Att_admin_cron_schedule
                 for ($i = 0; $i < sizeof($data); $i++) {
                     $block_height = $data[$i]['block_height'];
 
-
-                    $notif_email_address = isset($options['notif_email_address']) ? esc_attr($options['notif_email_address']) : '';
-                    $bodyReplacements['site_admin_name'] = "test_site_admin_name";
-                    $ATTP_mail_templete_post_type_Admin->template($notif_email_address, 'new-transaction-templete', $data, $bodyReplacements);
-
-
                     $options = get_option('ada_tracking_option');
                     $last_synced_block = isset($options["last_synced_block"]) ? esc_attr($options["last_synced_block"]) : '0';
                     if ($block_height > $last_synced_block) {
@@ -160,6 +154,14 @@ class Att_admin_cron_schedule
                         update_option('ada_tracking_option', $options);
                     }
                 }
+
+
+
+                $notif_email_address = isset($options['notif_email_address']) ? esc_attr($options['notif_email_address']) : '';
+                $bodyReplacements['site_admin_name'] = "test_site_admin_name";
+                $ATTP_mail_templete_post_type_Admin->template($notif_email_address, 'new-transaction-templete', $data, $bodyReplacements);
+
+
             }
         }
     }
