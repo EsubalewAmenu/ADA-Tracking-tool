@@ -24,37 +24,64 @@ class Att_admin_Base
 {
 
 
-	public function __construct()
-	{
-	}
-	function att_base_menu_section()
-	{
+    public function __construct()
+    {
+    }
+    function att_base_menu_section()
+    {
+
+        $Att_admin_transactions = new Att_admin_transactions();
+        $Att_admin_settings = new Att_admin_settings();
+        $Att_admin_cron_schedule = new Att_admin_cron_schedule();
+
+        $capability = "manage_options";
+
+        // Adding submenu page to the 'attp_mails' post type
+        add_submenu_page(
+            'edit.php?post_type=attp_mails',      // Parent slug
+            'Cron Schedule',                    // Page title
+            'Cron Schedule',                    // Menu title
+            $capability,                          // Capability
+            'edit.php?post_type=attp_mails-cron-schedule', // Menu slug
+            array($Att_admin_cron_schedule, "att_menu_cron_schedule_OnClick") // Callback function
+        );
+
+        // Adding submenu page to the 'attp_mails' post type
+        add_submenu_page(
+            'edit.php?post_type=attp_mails',      // Parent slug
+            'How to use',                    // Page title
+            'How to use',                    // Menu title
+            $capability,                          // Capability
+            'edit.php?post_type=attp_mails-how-to-use', // Menu slug
+            array($this, "att_menu_page_on_click") // Callback function
+        );
 
 
 
-		$page_title = "ADA Tracking";
-		$menu_title = "ADA Tracking";
-		$capability = "manage_options";
-		$menu_slug = "att-menu";
-		$functionCallable = array($this, "att_menu_page_on_click");
-		$icon_url = "";
-		$position = 200;
-		add_menu_page($page_title, $menu_title, $capability, $menu_slug, $functionCallable, $icon_url, $position);
+        // Adding submenu page to the 'attp_mails' post type
+        add_submenu_page(
+            'edit.php?post_type=attp_mails',      // Parent slug
+            'My Transactions',                    // Page title
+            'My Transactions',                    // Menu title
+            $capability,                          // Capability
+            'edit.php?post_type=attp_mails-my-transactions', // Menu slug
+            array($Att_admin_transactions, "att_menu_my_transactions_OnClick") // Callback function
+        );
 
-		$Att_admin_transactions = new Att_admin_transactions();
-		add_submenu_page($menu_slug, "My Transactions", "My Transactions", $capability, $menu_slug . '-my-transactions', array($Att_admin_transactions, "att_menu_my_transactions_OnClick"));
 
-		$Att_admin_settings = new Att_admin_settings();
-		add_submenu_page($menu_slug, "Setting", "Settings", $capability, $menu_slug . '-setting', array($Att_admin_settings, "att_menu_setting_OnClick"));
+        // Adding submenu page to the 'attp_mails' post type
+        add_submenu_page(
+            'edit.php?post_type=attp_mails',      // Parent slug
+            'Setting',                    // Page title
+            'Setting',                    // Menu title
+            $capability,                          // Capability
+            'edit.php?post_type=attp_mails-settings', // Menu slug
+            array($Att_admin_settings, "att_menu_setting_OnClick") // Callback function
+        );
+    }
 
-		$Att_admin_cron_schedule = new Att_admin_cron_schedule();
-		add_submenu_page($menu_slug, "Cron Schedule", "Cron Schedule", $capability, $menu_slug . '-cron-schedule', array($Att_admin_cron_schedule, "att_menu_cron_schedule_OnClick"));
-	}
-
-	public function att_menu_page_on_click()
-	{
-		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'partials/info/how-to-use.php';
-	}
-
-	
+    public function att_menu_page_on_click()
+    {
+        include_once plugin_dir_path(dirname(__FILE__)) . 'partials/info/how-to-use.php';
+    }
 }
