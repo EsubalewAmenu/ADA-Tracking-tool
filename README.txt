@@ -55,8 +55,29 @@ No upgrade notice at this time.
 ## Troubleshooting:
 If you encounter any issues or have questions about the plugin, please reach out to our support team for assistance. You can contact us via email or through our support forum.
 
+## Third-Party Services
+Our plugin relies on external services to function properly. Below is the detailed information about the service we use:
+
+### Service Used: AdaStat API
+
+- Purpose: This service is used to fetch transaction detail data that is essential for the functionality of our plugin.
+Data Transmitted: No personal data is transmitted to AdaStat; only transaction hash queries are made.
+Service URL: https://api.adastat.net/
+Terms of Service: https://api.adastat.net/#section/API-Specification
+Privacy Policy: https://api.adastat.net/#section/API-Specification
+Please review the terms of service and privacy policy of AdaStat to understand your rights and obligations.
+
+### Service Used: Blockfrost API
+
+- Purpose: Our plugin calls the Blockfrost API to retrieve transaction list data from the Cardano blockchain.
+Data Transmitted: No personal data is transmitted to Blockfrost; only Cardano Shelley address queries are made.
+Service URL: https://cardano-mainnet.blockfrost.io/
+Terms of Service: https://blockfrost.io/terms
+Privacy Policy: https://blockfrost.io/privacy
+Please review the terms of service and privacy policy of AdaStat to understand your rights and obligations.
+
 ## Contact:
-For support inquiries, please email support@universaldevtools.com.
-For general questions and feedback, please visit our website: https://www.universaldevtools.com/contact.
+For support inquiries, please email esubalew.a2009@gmail.com.
+For general questions and feedback, please visit our website: https://datascienceplc.com/contact.
 
 Thank you for using the Universal DevTools for Cardano Integration plugin! Happy integrating!
