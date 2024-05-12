@@ -129,8 +129,9 @@ class Att_admin_cron_schedule
         $receiving_address = isset($options[$name]) ? esc_attr($options[$name]) : '';
         $ATTP_mail_templete_post_type_Admin = new ATTP_mail_templete_post_type_Admin();
 
+        $notif_email_address_cb = isset($options["notif_email_address_cb"]) && $options["notif_email_address_cb"] === 'on' ? true : false;
         // $receiving_address = '';
-        if ($receiving_address != '') {
+        if (substr($receiving_address, 0, 4) === "addr" && $notif_email_address_cb) {
             include_once plugin_dir_path(dirname(__FILE__)) . '../common/fetch-data.php';
             $ATTP_Fetch_Data = new ATTP_Fetch_Data();
 
@@ -153,10 +154,34 @@ class Att_admin_cron_schedule
                 }
 
 
+                $prefix_filter_cb = isset($options["prefix_filter_cb"]) && $options["prefix_filter_cb"] === 'on' ? true : false;
+                $prefix_filter = isset($options["prefix_filter"]) ? esc_attr($options["prefix_filter"]) : '';
 
-                $notif_email_address = isset($options['notif_email_address']) ? esc_attr($options['notif_email_address']) : '';
-                $bodyReplacements['site_admin_name'] = "test_site_admin_name";
-                $ATTP_mail_templete_post_type_Admin->template($notif_email_address, 'new-transaction-templete', $data, $bodyReplacements);
+                $suffix_filter_cb = isset($options["suffix_filter_cb"]) && $options["suffix_filter_cb"] === 'on' ? true : false;
+                $suffix_filter = isset($options["suffix_filter"]) ? esc_attr($options["suffix_filter"]) : '';
+
+
+                $removable_tx_indexs = array();
+                for ($single_tx_index = 0; $single_tx_index < sizeof($data); $single_tx_index++) {
+                    $message = $data[$single_tx_index]['message'] != null ? $data[$single_tx_index]['message'] : '';
+
+                    if ($prefix_filter_cb && substr($message, 0, strlen($prefix_filter)) !== $prefix_filter) {
+                        $removable_tx_indexs[] = $single_tx_index;
+                    }
+
+                    if ($suffix_filter_cb && substr($message, -strlen($suffix_filter)) !== $suffix_filter) {
+                        $removable_tx_indexs[] = $single_tx_index;
+                    }
+                }
+                foreach ($removable_tx_indexs as $single_removable_index) {
+                    unset($data[$single_removable_index]);
+                }
+
+                if ($data) {
+                    $notif_email_address = isset($options['notif_email_address']) ? esc_attr($options['notif_email_address']) : '';
+                    $bodyReplacements['site_admin_name'] = "test_site_admin_name";
+                    $ATTP_mail_templete_post_type_Admin->template($notif_email_address, 'new-transaction-templete', $data, $bodyReplacements);
+                }
             }
         }
     }
