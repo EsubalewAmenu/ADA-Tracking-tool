@@ -221,7 +221,7 @@ class Att {
 
 		function load_transaction_history_callback() {
 			// Verify nonce
-			if ( ! isset( $_POST['security'] ) || ! wp_verify_nonce( $_POST['security'], 'load_transaction_history_nonce' ) ) {
+			if ( ! isset( $_POST['security'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash ( $_POST['security'])), 'load_transaction_history_nonce' ) ) {
 				wp_send_json_error( 'Nonce verification failed.', 403 );
 			}
 		
