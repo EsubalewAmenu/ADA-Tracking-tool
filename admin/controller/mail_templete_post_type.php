@@ -87,4 +87,81 @@ class ATTP_mail_templete_post_type_Admin
     }
 
 
+    public function template($email, $slug, $transactions, $bodyReplacements)
+    {
+        $args = array(
+            'name' => $slug,
+            'post_type' => array('attp_mails'),
+            'post_status' => 'publish',
+            'showposts' => 1,
+            'ignore_sticky_posts' => 1,
+        );
+        $my_posts = get_posts($args);
+
+        if ($my_posts) {
+            $subject = $my_posts[0]->post_title;
+            $content_title = $my_posts[0]->post_title;
+
+            $body = $my_posts[0]->post_content;
+
+            foreach ($bodyReplacements as $key => $value) {
+                $subject = str_replace("{{--" . $key . "--}}", $value, html_entity_decode($subject));
+                $content_title = str_replace("{{--" . $key . "--}}", $value, $content_title);
+                $body = str_replace("{{--" . $key . "--}}", $value, $body);
+            }
+
+            if (strpos($body, '{{--transaction_list--}}') !== false) {
+
+
+                $body = str_replace("{{--transaction_list--}}", self::transactions_div($transactions), $body);
+            }
+
+            $file_path = plugin_dir_path(dirname(__FILE__)) . 'partials/account/template.php';
+            $email_content = file_get_contents($file_path);
+
+            $email_content = str_replace("{{--subject--}}", $subject, $email_content);
+            $email_content = str_replace("{{--content_title--}}", "<p style='margin-top: -10px;margin-left: 48px;color: #49FFB3;font-size:15px !important'>Where the future gets [sur]real", $email_content);
+            $email_content = str_replace("{{--body--}}", $body, $email_content);
+
+            $email_content = str_replace("{{--home_url--}}", home_url(), $email_content);
+
+            $header = array('Content-Type: text/html; charset=UTF-8');
+
+            return wp_mail($email, $subject, $email_content, $header);
+        }
+        return 0;
+    }
+
+
+    public function transactions_div($transactions)
+    {
+        $transactions_content = '<table id="transaction-table">
+        <thead>
+            <tr>
+                <th>Tx type</th>
+                <th>Amount</th>
+                <th>TX hash</th>
+                <th>TX time</th>
+                <th>Message</th>
+                <th>Tx confirmation</th>
+            </tr>
+        </thead>
+        <tbody id="transaction-table-body">';
+        foreach ($transactions as $transaction) {
+
+            $transactions_content .= '
+            <tr>
+            <td>' . ($transaction['is_incoming'] == "true" ? "Incomming Tx" : "Outgoint Tx") . '</td>
+            <td>' . $transaction['amount'] . '</td>
+        <td><a style="color: #fff !important;text-decoration:none;" href="' . $transaction['tx_hash'] . '">' . substr($transaction['tx_hash'], 0, 15) . '</a></td>
+        <td>' . $transaction['time'] . '</td>
+        <td>' . $transaction['message'] . '</td>
+        <td>' . $transaction['confirmation'] . '</td>
+        </tr>';
+        }
+        $transactions_content .= '</tbody> </table>';
+        if ($transactions_content == "") return "";
+
+        return $transactions_content;
+    }
 }
