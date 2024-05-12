@@ -134,25 +134,22 @@ class Att_admin_cron_schedule
             include_once plugin_dir_path(dirname(__FILE__)) . '../common/fetch-data.php';
             $ATTP_Fetch_Data = new ATTP_Fetch_Data();
 
-
-
-			
-			$count = isset($options["attp_tx_per_page"]) ? esc_attr($options["attp_tx_per_page"]) : 10;			
+            $count = isset($options["attp_tx_per_page"]) ? esc_attr($options["attp_tx_per_page"]) : 10;
             $page = 1;
             $order = "asc";
             $block = isset($options["last_synced_block"]) ? esc_attr($options["last_synced_block"]) : '0';
             $data = $ATTP_Fetch_Data->get_transactions($receiving_address, $count, $page, $order, $block);
-
             if (is_array($data)) {
-                for ($i = 0; $i < sizeof($data); $i++) {
-                    $block_height = $data[$i]['block_height'];
 
-                    $options = get_option('ada_tracking_option');
-                    $last_synced_block = isset($options["last_synced_block"]) ? esc_attr($options["last_synced_block"]) : '0';
-                    if ($block_height > $last_synced_block) {
-                        $options['last_synced_block'] = $block_height;
-                        update_option('ada_tracking_option', $options);
-                    }
+                $block_height = $data[(sizeof($data) - 1)]['block_height'];
+                $tx_index = $data[(sizeof($data) - 1)]['tx_index'];
+
+                $last_synced_block = isset($options["last_synced_block"]) ? esc_attr($options["last_synced_block"]) : '0';
+                $last_synced_tx_index = isset($options["last_synced_tx_index"]) ? esc_attr($options["last_synced_tx_index"]) : '0';
+                if ($block_height > $last_synced_block || ($block_height == $last_synced_block && $tx_index > $last_synced_tx_index)) {
+                    $options['last_synced_block'] = $block_height;
+                    $options['last_synced_tx_index'] = $last_synced_tx_index;
+                    update_option('ada_tracking_option', $options);
                 }
 
 
@@ -160,8 +157,6 @@ class Att_admin_cron_schedule
                 $notif_email_address = isset($options['notif_email_address']) ? esc_attr($options['notif_email_address']) : '';
                 $bodyReplacements['site_admin_name'] = "test_site_admin_name";
                 $ATTP_mail_templete_post_type_Admin->template($notif_email_address, 'new-transaction-templete', $data, $bodyReplacements);
-
-
             }
         }
     }
