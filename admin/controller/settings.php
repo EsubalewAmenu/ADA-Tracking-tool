@@ -233,6 +233,24 @@ class Att_admin_settings
             'ada-tracking-plugin',
             'ada_tracking_settings_section'
         );
+        add_settings_field(
+            "last_synced_tx_index",
+            'Last Synced TX Index',
+            function () {
+                $name = "last_synced_tx_index";
+                $description = 'Transactions will be synced starting from the above metioned index in the block.';
+
+
+                $options = get_option('ada_tracking_option');
+                $value = isset($options[$name]) ? esc_attr($options[$name]) : '0'; ?>
+            <input type="number" name="ada_tracking_option[<?php echo esc_attr($name) ?>]" value="<?php echo esc_attr($value) ?>" />
+
+            <p class="description"><?php echo esc_attr($description) ?></p>
+<?php
+            },
+            'ada-tracking-plugin',
+            'ada_tracking_settings_section'
+        );
         ////////////////////////////////////////////////////////////////////////////////////
     }
 

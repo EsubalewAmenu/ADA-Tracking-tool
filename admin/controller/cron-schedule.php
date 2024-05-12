@@ -142,9 +142,6 @@ class Att_admin_cron_schedule
             $data = $ATTP_Fetch_Data->get_transactions($receiving_address, $count, $page, $order, $block);
             if (is_array($data)) {
 
-                $block_height = $data[(sizeof($data) - 1)]['block_height'];
-                $tx_index = $data[(sizeof($data) - 1)]['tx_index'];
-
 
                 $prefix_filter_cb = isset($options["prefix_filter_cb"]) && $options["prefix_filter_cb"] === 'on' ? true : false;
                 $prefix_filter = isset($options["prefix_filter"]) ? esc_attr($options["prefix_filter"]) : '';
@@ -157,12 +154,15 @@ class Att_admin_cron_schedule
                 for ($single_tx_index = 0; $single_tx_index < sizeof($data); $single_tx_index++) {
 
 
+                    $block_height = $data[$single_tx_index]['block_height'];
+                    $tx_index = $data[$single_tx_index]['tx_index'];
+
                     $options = get_option('ada_tracking_option');
                     $last_synced_block = isset($options["last_synced_block"]) ? esc_attr($options["last_synced_block"]) : '0';
                     $last_synced_tx_index = isset($options["last_synced_tx_index"]) ? esc_attr($options["last_synced_tx_index"]) : '0';
                     if ($block_height > $last_synced_block || ($block_height == $last_synced_block && $tx_index > $last_synced_tx_index)) {
                         $options['last_synced_block'] = $block_height;
-                        $options['last_synced_tx_index'] = $last_synced_tx_index;
+                        $options['last_synced_tx_index'] = $tx_index;
                         update_option('ada_tracking_option', $options);
 
 
