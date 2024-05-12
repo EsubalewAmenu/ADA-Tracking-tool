@@ -26,10 +26,14 @@ class ATTP_Fetch_Data
     private $blockfrost_base_url = 'https://cardano-mainnet.blockfrost.io/api/v0/';
     private $adastat_base_url = 'https://adastat.net/api/rest/v1/';
 
-    function fetch_cardano_transactions($address, $count, $page, $order, $block)
+    function fetch_cardano_transactions($address, $count, $page, $order, $block = null)
     {
-        $url = $this->blockfrost_base_url . "addresses/$address/transactions?count=$count&page=$page&order=$order&from=$block";
+        $url = $this->blockfrost_base_url . "addresses/$address/transactions?count=$count&page=$page&order=$order";
 
+        // Append the 'from' parameter only if $block is not null
+        if ($block !== null) {
+            $url .= "&from=$block";
+        }
 
         $name = "blockfrost_api";
         $options = get_option('ada_tracking_option');
@@ -55,7 +59,7 @@ class ATTP_Fetch_Data
 
         return $body;
     }
-    function get_transactions($receiving_address, $count, $page, $order, $block)
+    function get_transactions($receiving_address, $count, $page, $order, $block = null)
     {
 
         $data = self::fetch_cardano_transactions($receiving_address, $count, $page, $order, $block);
