@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; ?>
 <div class="wrap">
     <h2>Transaction Checker Cron Schedule Settings</h2>
     <form method="post" action="options.php">

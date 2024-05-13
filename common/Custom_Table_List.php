@@ -22,7 +22,8 @@
  */
 
  require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
-
+ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+ 
  class Attp_Custom_Table_List extends WP_List_Table {
      private $data = array(); // Class property to store data
      private $columns;

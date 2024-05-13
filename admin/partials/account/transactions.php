@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) exit; ?>
 <div class="wrap">
 	<h1>My Transactions </h1>
 	<div id="col-container">
