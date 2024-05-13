@@ -60,12 +60,12 @@ class Attp_admin_cron_schedule
 
                     $description =  'Cron Schedule is running. Next run: ' . $formatted_time . "<br>" .
                         'Time until next run: ' . $hours . ' hours, ' . $minutes . ' minutes, and ' . $seconds . ' seconds.';
-                    echo $description;
+                    echo esc_attr($description);
                 } else {
 
                     $name = "attp_cron_schedule_fieldtezt";
                     $description = "Cron Schedule is not running.";
-                    echo $description;
+                    echo esc_attr($description);
                 }
             },
             'attp-cron-schedule',
