@@ -52,12 +52,14 @@ class Attp_admin_transactions
 			$receiving_addresses_table->prepare_items();
 
 
-			if (isset($_GET['count']) && !empty(esc_attr($_GET['count']))) {
-				$attp_tx_per_page = esc_attr($_GET['count']);
-			} else {
-				$name = "attp_tx_per_page";
-				$options = get_option('attp_option');
-				$attp_tx_per_page = isset($options[$name]) ? esc_attr($options[$name]) : 5;
+			$name = "attp_tx_per_page";
+			$options = get_option('attp_option');
+			$attp_tx_per_page = isset($options[$name]) ? esc_attr($options[$name]) : 5;
+			
+			if (isset($_GET['count'], $_GET['_wpnonce']) && wp_verify_nonce( sanitize_text_field( wp_unslash($_GET['_wpnonce'], 'count_nonce')))) {
+				if (!empty($_GET['count'])){
+					$attp_tx_per_page = esc_attr($_GET['count']);
+				}
 			}
 			include_once plugin_dir_path(dirname(__FILE__)) . 'partials/account/transactions.php';
 		}

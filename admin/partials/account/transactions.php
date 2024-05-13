@@ -25,6 +25,11 @@ function handleChange(selector) {
     var value = selector.value;
     var currentUrl = new URL(window.location.href);
     currentUrl.searchParams.set('count', value); // Set or update the 'count' parameter
+
+    // Generate a nonce and append it
+    var nonce = '<?php echo esc_attr(wp_create_nonce("count_nonce")); ?>';
+    currentUrl.searchParams.set('_wpnonce', nonce);
+
     window.location.href = currentUrl.toString(); // Reloads the page with updated URL
 }
 	jQuery(document).ready(function($) {

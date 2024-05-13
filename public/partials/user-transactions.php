@@ -1,4 +1,4 @@
-<?php if ( ! defined( 'ABSPATH' ) ) exit; ?>
+<?php if (!defined('ABSPATH')) exit; ?>
 <div class="container">
     <form class="form" action="" method="post">
 
@@ -50,6 +50,12 @@
         var value = selector.value;
         var currentUrl = new URL(window.location.href);
         currentUrl.searchParams.set('count', value); // Set or update the 'count' parameter
+
+        // Generate a nonce and append it
+        var nonce = '<?php echo esc_attr(wp_create_nonce("count_nonce")); ?>';
+        currentUrl.searchParams.set('_wpnonce', nonce);
+
+
         window.location.href = currentUrl.toString(); // Reloads the page with updated URL
     }
 
