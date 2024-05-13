@@ -52,7 +52,7 @@ class Attp_admin_cron_schedule
                     $current_time = current_time('timestamp'); // Get the current time with WordPress time zone
                     $time_difference = $timestamp - $current_time;
 
-                    $formatted_time = get_date_from_gmt(date('Y-m-d H:i:s', $timestamp), 'Y-m-d H:i:s');
+                    $formatted_time = get_date_from_gmt(gmdate('Y-m-d H:i:s', $timestamp), 'Y-m-d H:i:s');
                     $hours = floor($time_difference / 3600);
                     $minutes = floor(($time_difference % 3600) / 60);
                     $seconds = $time_difference % 60;
