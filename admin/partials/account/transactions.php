@@ -43,7 +43,7 @@ function handleChange(selector) {
 			$loadMoreBtn.text('Loading...').prop('disabled', true); // Change button text and disable it
 
 			$.ajax({
-				url: `<?php echo admin_url('admin-ajax.php') ?>`,
+				url: `<?php echo esc_url(admin_url('admin-ajax.php')) ?>`,
 				type: 'POST',
 				data: {
 					action: 'load_more_transactions',
