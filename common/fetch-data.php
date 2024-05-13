@@ -123,7 +123,7 @@ class Attp_Fetch_Data
 
         $transaction_details = [
             'is_incoming' => false,
-            'transaction_time' => date('Y-m-d H:i:s', $transaction_data['data']['time']),
+            'transaction_time' => gmdate('Y-m-d H:i:s', $transaction_data['data']['time']),
             'tx_hash' => $transaction_data['data']['hash'],
             'transaction_tokens' => [],
             'confirmation' => $transaction_data['data']['confirmation'],
