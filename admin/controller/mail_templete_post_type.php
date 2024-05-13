@@ -117,7 +117,7 @@ class ATTP_mail_templete_post_type_Admin
             }
 
             $file_path = plugin_dir_path(dirname(__FILE__)) . 'partials/account/template.php';
-            $email_content = wp_remote_get($file_path);
+            $email_content = file_get_contents($file_path);
 
             $email_content = str_replace("{{--subject--}}", $subject, $email_content);
             $email_content = str_replace("{{--content_title--}}", "<p style='margin-top: -10px;margin-left: 48px;color: #49FFB3;font-size:15px !important'>Where the future gets [sur]real", $email_content);
