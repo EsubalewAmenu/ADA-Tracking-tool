@@ -3,11 +3,11 @@
 /**
  * Fired during plugin deactivation
  *
- * @link       https://github.com/EsubalewAmenu
+ * @link       https:///github.com/EsubalewAmenu
  * @since      1.0.0
  *
- * @package    Att
- * @subpackage Att/includes
+ * @package    Attp
+ * @subpackage Attp/includes
  */
 
 /**
@@ -16,11 +16,11 @@
  * This class defines all code necessary to run during the plugin's deactivation.
  *
  * @since      1.0.0
- * @package    Att
- * @subpackage Att/includes
+ * @package    Attp
+ * @subpackage Attp/includes
  * @author     Esubalew A <esubalew.a2009@gmail.com>
  */
-class Att_Deactivator {
+class Attp_Deactivator {
 
 	/**
 	 * Short Description. (use period)

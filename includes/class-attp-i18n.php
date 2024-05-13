@@ -9,8 +9,8 @@
  * @link       https://github.com/EsubalewAmenu
  * @since      1.0.0
  *
- * @package    Att
- * @subpackage Att/includes
+ * @package    Attp
+ * @subpackage Attp/includes
  */
 
 /**
@@ -20,11 +20,11 @@
  * so that it is ready for translation.
  *
  * @since      1.0.0
- * @package    Att
- * @subpackage Att/includes
+ * @package    Attp
+ * @subpackage Attp/includes
  * @author     Esubalew A <esubalew.a2009@gmail.com>
  */
-class Att_i18n {
+class Attp_i18n {
 
 
 	/**
@@ -35,7 +35,7 @@ class Att_i18n {
 	public function load_plugin_textdomain() {
 
 		load_plugin_textdomain(
-			'att',
+			'attp',
 			false,
 			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
 		);

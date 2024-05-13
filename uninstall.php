@@ -22,7 +22,7 @@
  * @link       https://github.com/EsubalewAmenu
  * @since      1.0.0
  *
- * @package    Att
+ * @package    Attp
  */
 
 // If uninstall not called from WordPress, then exit.

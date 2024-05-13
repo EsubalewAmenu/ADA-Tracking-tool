@@ -6,8 +6,8 @@
  * @link       https://github.com/EsubalewAmenu
  * @since      1.0.0
  *
- * @package    Att_admin
- * @subpackage Att_admin/admin
+ * @package    Attp_admin
+ * @subpackage Attp_admin/admin
  */
 
 /**
@@ -16,14 +16,14 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  *
- * @package    Att_admin
- * @subpackage Att_admin/admin
+ * @package    Attp_admin
+ * @subpackage Attp_admin/admin
  * @author     Esubalew Amenu <esubalew.a2009@gmail.com>
  */
 
  require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
 
- class Custom_Table_List extends WP_List_Table {
+ class Attp_Custom_Table_List extends WP_List_Table {
      private $data = array(); // Class property to store data
      private $columns;
      private $per_page = 10;

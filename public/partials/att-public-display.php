@@ -8,8 +8,8 @@
  * @link       https://github.com/EsubalewAmenu
  * @since      1.0.0
  *
- * @package    Att
- * @subpackage Att/public/partials
+ * @package    Attp
+ * @subpackage Attp/public/partials
  */
 ?>
 

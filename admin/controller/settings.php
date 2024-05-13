@@ -6,8 +6,8 @@
  * @link       https://github.com/EsubalewAmenu
  * @since      1.0.0
  *
- * @package    Att_admin
- * @subpackage Att_admin/admin
+ * @package    Attp_admin
+ * @subpackage Attp_admin/admin
  */
 
 /**
@@ -16,14 +16,14 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  *
- * @package    Att_admin
- * @subpackage Att_admin/admin
+ * @package    Attp_admin
+ * @subpackage Attp_admin/admin
  * @author     Esubalew Amenu <esubalew.a2009@gmail.com>
  */
-class Att_admin_settings
+class Attp_admin_settings
 {
 
-    public function att_menu_setting_OnClick()
+    public function attp_menu_setting_OnClick()
     {
         include_once plugin_dir_path(dirname(__FILE__)) . 'partials/settings/index.php';
     }
@@ -32,7 +32,7 @@ class Att_admin_settings
     function ada_tracking_settings_init()
     {
         // Register a setting and its sanitization callback
-        register_setting('ada_tracking_settings_group', 'ada_tracking_option', 'sanitize_callback');
+        register_setting('ada_tracking_settings_group', 'attp_option', 'sanitize_callback');
 
         // Add a section and fields to the settings page
         add_settings_section(
@@ -43,15 +43,15 @@ class Att_admin_settings
         );
 
         add_settings_field(
-            "blockfrost_api",
+            "attp_blockfrost_api",
             'Blockfrost project ID',
             function () {
-                $name = "blockfrost_api";
+                $name = "attp_blockfrost_api";
                 $description = 'Blockfrost mainnet project id';
 
-                $options = get_option('ada_tracking_option');
+                $options = get_option('attp_option');
                 $value = isset($options[$name]) ? esc_attr($options[$name]) : ''; ?>
-            <input type="text" name="ada_tracking_option[<?php echo esc_attr($name) ?>]" value="<?php echo esc_attr($value) ?>" />
+            <input type="text" name="attp_option[<?php echo esc_attr($name) ?>]" value="<?php echo esc_attr($value) ?>" />
 
             <p class="description"><?php echo esc_attr($description) ?></p>
         <?php
@@ -61,15 +61,15 @@ class Att_admin_settings
         );
 
         add_settings_field(
-            "receiving_address",
+            "attp_receiving_address",
             'ADA Receiving Address',
             function () {
-                $name = "receiving_address";
+                $name = "attp_receiving_address";
                 $description = 'Site owner/transaction receiving address';
 
-                $options = get_option('ada_tracking_option');
+                $options = get_option('attp_option');
                 $value = isset($options[$name]) ? esc_attr($options[$name]) : ''; ?>
-            <input type="text" name="ada_tracking_option[<?php echo esc_attr($name) ?>]" value="<?php echo esc_attr($value) ?>" />
+            <input type="text" name="attp_option[<?php echo esc_attr($name) ?>]" value="<?php echo esc_attr($value) ?>" />
 
             <p class="description"><?php echo esc_attr($description) ?></p>
         <?php
@@ -79,16 +79,16 @@ class Att_admin_settings
         );
 
         add_settings_field(
-            "notif_email_address_cb",
+            "attp_notif_email_address_cb",
             'Notification Email?',
             function () {
-                $name = "notif_email_address_cb";
+                $name = "attp_notif_email_address_cb";
                 $description = 'Do you want notification email when there is new incoming transaction?';
 
-                $options = get_option('ada_tracking_option');
+                $options = get_option('attp_option');
                 $checked = isset($options[$name]) && $options[$name] === 'on' ? 'checked="checked"' : '';
         ?>
-            <input type="checkbox" name="ada_tracking_option[<?php echo esc_attr($name) ?>]" <?php echo esc_attr($checked) ?> />
+            <input type="checkbox" name="attp_option[<?php echo esc_attr($name) ?>]" <?php echo esc_attr($checked) ?> />
             <p class="description"><?php echo esc_attr($description) ?></p>
         <?php
             },
@@ -96,16 +96,16 @@ class Att_admin_settings
             'ada_tracking_settings_section'
         );
         add_settings_field(
-            "notif_email_address",
+            "attp_notif_email_address",
             'Notification Email address',
             function () {
-                $name = "notif_email_address";
+                $name = "attp_notif_email_address";
                 $description = 'Notification email will be sent to the above email when there is new incoming transaction';
 
 
-                $options = get_option('ada_tracking_option');
+                $options = get_option('attp_option');
                 $value = isset($options[$name]) ? esc_attr($options[$name]) : ''; ?>
-            <input type="text" name="ada_tracking_option[<?php echo esc_attr($name) ?>]" value="<?php echo esc_attr($value) ?>" />
+            <input type="text" name="attp_option[<?php echo esc_attr($name) ?>]" value="<?php echo esc_attr($value) ?>" />
 
             <p class="description"><?php echo esc_attr($description) ?></p>
         <?php
@@ -116,16 +116,16 @@ class Att_admin_settings
 
         ////////////////////////////////////////////////////////////////////////////////////
         add_settings_field(
-            "prefix_filter_cb",
+            "attp_prefix_filter_cb",
             'Filter tx by prefix?',
             function () {
-                $name = "prefix_filter_cb";
+                $name = "attp_prefix_filter_cb";
                 $description = 'Do you want to filter incoming transactions based on note prefix text?';
 
-                $options = get_option('ada_tracking_option');
+                $options = get_option('attp_option');
                 $checked = isset($options[$name]) && $options[$name] === 'on' ? 'checked="checked"' : '';
         ?>
-            <input type="checkbox" name="ada_tracking_option[<?php echo esc_attr($name) ?>]" <?php echo esc_attr($checked) ?> />
+            <input type="checkbox" name="attp_option[<?php echo esc_attr($name) ?>]" <?php echo esc_attr($checked) ?> />
             <p class="description"><?php echo esc_attr($description) ?></p>
         <?php
             },
@@ -133,15 +133,15 @@ class Att_admin_settings
             'ada_tracking_settings_section'
         );
         add_settings_field(
-            "prefix_filter",
+            "attp_prefix_filter",
             'Prefix string',
             function () {
-                $name = "prefix_filter";
+                $name = "attp_prefix_filter";
                 $description = 'Incoming transactions will be filtered when tx note prefix is matched.';
 
-                $options = get_option('ada_tracking_option');
+                $options = get_option('attp_option');
                 $value = isset($options[$name]) ? esc_attr($options[$name]) : ''; ?>
-            <input type="text" name="ada_tracking_option[<?php echo esc_attr($name) ?>]" value="<?php echo esc_attr($value) ?>" />
+            <input type="text" name="attp_option[<?php echo esc_attr($name) ?>]" value="<?php echo esc_attr($value) ?>" />
 
             <p class="description"><?php echo esc_attr($description) ?></p>
         <?php
@@ -151,16 +151,16 @@ class Att_admin_settings
         );
         ////////////////////////////////////////////////////////////////////////////////////
         add_settings_field(
-            "suffix_filter_cb",
+            "attp_suffix_filter_cb",
             'Filter tx by suffix?',
             function () {
-                $name = "suffix_filter_cb";
+                $name = "attp_suffix_filter_cb";
                 $description = 'Do you want to filter incoming transactions based on note suffix text?';
 
-                $options = get_option('ada_tracking_option');
+                $options = get_option('attp_option');
                 $checked = isset($options[$name]) && $options[$name] === 'on' ? 'checked="checked"' : '';
         ?>
-            <input type="checkbox" name="ada_tracking_option[<?php echo esc_attr($name) ?>]" <?php echo esc_attr($checked) ?> />
+            <input type="checkbox" name="attp_option[<?php echo esc_attr($name) ?>]" <?php echo esc_attr($checked) ?> />
             <p class="description"><?php echo esc_attr($description) ?></p>
         <?php
             },
@@ -168,16 +168,16 @@ class Att_admin_settings
             'ada_tracking_settings_section'
         );
         add_settings_field(
-            "suffix_filter",
+            "attp_suffix_filter",
             'Suffix String',
             function () {
-                $name = "suffix_filter";
+                $name = "attp_suffix_filter";
                 $description = 'Incoming transactions will be filtered when tx note suffix is matched.';
 
 
-                $options = get_option('ada_tracking_option');
+                $options = get_option('attp_option');
                 $value = isset($options[$name]) ? esc_attr($options[$name]) : ''; ?>
-            <input type="text" name="ada_tracking_option[<?php echo esc_attr($name) ?>]" value="<?php echo esc_attr($value) ?>" />
+            <input type="text" name="attp_option[<?php echo esc_attr($name) ?>]" value="<?php echo esc_attr($value) ?>" />
 
             <p class="description"><?php echo esc_attr($description) ?></p>
         <?php
@@ -187,18 +187,18 @@ class Att_admin_settings
         );
 
         add_settings_field(
-            "attp_tx_per_page",
+            "attp_attp_tx_per_page",
             'TX per page',
             function () {
-                $name = "attp_tx_per_page";
+                $name = "attp_attp_tx_per_page";
                 $description = 'Default number of transactions that will be loaded per page';
 
 
-                $options = get_option('ada_tracking_option');
+                $options = get_option('attp_option');
                 $value = isset($options[$name]) ? esc_attr($options[$name]) : ''; ?>
 
 
-            <select name="ada_tracking_option[<?php echo esc_attr($name) ?>]">
+            <select name="attp_option[<?php echo esc_attr($name) ?>]">
                 <option value="1" <?php if ($value == 1) echo esc_attr('selected'); ?>>1</option>
                 <option value="5" <?php if ($value == 5) echo esc_attr('selected'); ?>>5</option>
                 <option value="10" <?php if ($value == 10) echo esc_attr('selected'); ?>>10</option>
@@ -216,16 +216,16 @@ class Att_admin_settings
         ////////////////////////////////////////////////////////////////////////////////////
 
         add_settings_field(
-            "last_synced",
+            "attp_last_synced_block",
             'Last Synced TX block',
             function () {
-                $name = "last_synced_block";
+                $name = "attp_last_synced_block";
                 $description = 'Incoming transactions will be synced starting from the above metioned block.';
 
 
-                $options = get_option('ada_tracking_option');
+                $options = get_option('attp_option');
                 $value = isset($options[$name]) ? esc_attr($options[$name]) : '0'; ?>
-            <input type="number" name="ada_tracking_option[<?php echo esc_attr($name) ?>]" value="<?php echo esc_attr($value) ?>" />
+            <input type="number" name="attp_option[<?php echo esc_attr($name) ?>]" value="<?php echo esc_attr($value) ?>" />
 
             <p class="description"><?php echo esc_attr($description) ?></p>
 <?php
@@ -234,16 +234,16 @@ class Att_admin_settings
             'ada_tracking_settings_section'
         );
         add_settings_field(
-            "last_synced_tx_index",
+            "attp_last_synced_tx_index",
             'Last Synced TX Index',
             function () {
-                $name = "last_synced_tx_index";
+                $name = "attp_last_synced_tx_index";
                 $description = 'Transactions will be synced starting from the above metioned index in the block.';
 
 
-                $options = get_option('ada_tracking_option');
+                $options = get_option('attp_option');
                 $value = isset($options[$name]) ? esc_attr($options[$name]) : '0'; ?>
-            <input type="number" name="ada_tracking_option[<?php echo esc_attr($name) ?>]" value="<?php echo esc_attr($value) ?>" />
+            <input type="number" name="attp_option[<?php echo esc_attr($name) ?>]" value="<?php echo esc_attr($value) ?>" />
 
             <p class="description"><?php echo esc_attr($description) ?></p>
 <?php

@@ -9,8 +9,8 @@
  * @link       https://github.com/EsubalewAmenu
  * @since      1.0.0
  *
- * @package    Att
- * @subpackage Att/includes
+ * @package    Attp
+ * @subpackage Attp/includes
  */
 
 /**
@@ -23,11 +23,11 @@
  * version of the plugin.
  *
  * @since      1.0.0
- * @package    Att
- * @subpackage Att/includes
+ * @package    Attp
+ * @subpackage Attp/includes
  * @author     Esubalew A <esubalew.a2009@gmail.com>
  */
-class Att {
+class Attp {
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -35,7 +35,7 @@ class Att {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      Att_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 * @var      Attp_Loader    $loader    Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
 
@@ -67,12 +67,12 @@ class Att {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		if ( defined( 'ATT_VERSION' ) ) {
-			$this->version = ATT_VERSION;
+		if ( defined( 'ATTP_VERSION' ) ) {
+			$this->version = ATTP_VERSION;
 		} else {
 			$this->version = '1.0.0';
 		}
-		$this->plugin_name = 'att';
+		$this->plugin_name = 'attp';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -86,10 +86,10 @@ class Att {
 	 *
 	 * Include the following files that make up the plugin:
 	 *
-	 * - Att_Loader. Orchestrates the hooks of the plugin.
-	 * - Att_i18n. Defines internationalization functionality.
-	 * - Att_Admin. Defines all hooks for the admin area.
-	 * - Att_Public. Defines all hooks for the public side of the site.
+	 * - Attp_Loader. Orchestrates the hooks of the plugin.
+	 * - Attp_i18n. Defines internationalization functionality.
+	 * - Attp_Admin. Defines all hooks for the admin area.
+	 * - Attp_Public. Defines all hooks for the public side of the site.
 	 *
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.
@@ -103,20 +103,20 @@ class Att {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-att-loader.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-attp-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-att-i18n.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-attp-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-att-admin.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-attp-admin.php';
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controller/att-admin-base.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controller/attp-admin-base.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controller/settings.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controller/transactions.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controller/cron-schedule.php';
@@ -127,17 +127,17 @@ class Att {
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-att-public.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-attp-public.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/controller/user-transactions.php';
 
-		$this->loader = new Att_Loader();
+		$this->loader = new Attp_Loader();
 
 	}
 
 	/**
 	 * Define the locale for this plugin for internationalization.
 	 *
-	 * Uses the Att_i18n class in order to set the domain and to register the hook
+	 * Uses the Attp_i18n class in order to set the domain and to register the hook
 	 * with WordPress.
 	 *
 	 * @since    1.0.0
@@ -145,7 +145,7 @@ class Att {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new Att_i18n();
+		$plugin_i18n = new Attp_i18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
@@ -160,17 +160,17 @@ class Att {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new Att_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_admin = new Attp_Admin( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
-		$att_admin_base = new Att_admin_base();
-		$this->loader->add_action('admin_menu', $att_admin_base, 'att_base_menu_section');
+		$attp_admin_base = new Attp_admin_base();
+		$this->loader->add_action('admin_menu', $attp_admin_base, 'attp_base_menu_section');
 
-		$Att_admin_settings = new Att_admin_settings();
+		$Attp_admin_settings = new Attp_admin_settings();
 		// Register settings and sections
-		$this->loader->add_action('admin_init', $Att_admin_settings, 'ada_tracking_settings_init');
+		$this->loader->add_action('admin_init', $Attp_admin_settings, 'ada_tracking_settings_init');
 
 
 		$ATTP_mail_templete_post_type_Admin = new ATTP_mail_templete_post_type_Admin();
@@ -186,36 +186,36 @@ class Att {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new Att_Public( $this->get_plugin_name(), $this->get_version() );
+		$plugin_public = new Attp_Public( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 
-		$Att_public_transactions = new Att_public_transactions();
-		$this->loader->add_shortcode( 'att_transaction_history_code', $Att_public_transactions, 'att_transaction_history_OnClick' );
+		$Attp_public_transactions = new Attp_public_transactions();
+		$this->loader->add_shortcode( 'attp_transaction_history_code', $Attp_public_transactions, 'attp_transaction_history_OnClick' );
 	
 
-		$this->loader->add_action('wp_ajax_load_transaction_history', $Att_public_transactions, 'wp_ajax_load_transaction_history');
-		$this->loader->add_action('wp_ajax_nopriv_load_transaction_history', $Att_public_transactions, 'wp_ajax_load_transaction_history');
+		$this->loader->add_action('wp_ajax_load_transaction_history', $Attp_public_transactions, 'wp_ajax_load_transaction_history');
+		$this->loader->add_action('wp_ajax_nopriv_load_transaction_history', $Attp_public_transactions, 'wp_ajax_load_transaction_history');
 		
-		$Att_admin_cron_schedule = new Att_admin_cron_schedule();
+		$Attp_admin_cron_schedule = new Attp_admin_cron_schedule();
 
 		// Register Settings and Add Fields
-		$this->loader->add_action('admin_init', $Att_admin_cron_schedule, 'att_register_settings');
+		$this->loader->add_action('admin_init', $Attp_admin_cron_schedule, 'attp_register_settings');
 
 		// Managing the Cron Jobs
-		$this->loader->add_action('init', $Att_admin_cron_schedule, 'att_update_cron_job');
+		$this->loader->add_action('init', $Attp_admin_cron_schedule, 'attp_update_cron_job');
 
 		// Handle Form Submissions to Start/Stop Cron Jobs
-		$this->loader->add_action('admin_init', $Att_admin_cron_schedule, 'att_handle_cron_actions');
+		$this->loader->add_action('admin_init', $Attp_admin_cron_schedule, 'attp_handle_cron_actions');
 
-		add_filter('cron_schedules', array($Att_admin_cron_schedule, 'add_custom_cron_intervals'));
+		add_filter('cron_schedules', array($Attp_admin_cron_schedule, 'add_custom_cron_intervals'));
 
 
 
-		$Att_admin_transactions = new Att_admin_transactions();
-		$this->loader->add_action('wp_ajax_load_more_transactions', $Att_admin_transactions, 'load_more_transactions');
+		$Attp_admin_transactions = new Attp_admin_transactions();
+		$this->loader->add_action('wp_ajax_load_more_transactions', $Attp_admin_transactions, 'load_more_transactions');
 
 		add_action('wp_ajax_load_transaction_history', 'load_transaction_history_callback');
 
@@ -228,13 +228,6 @@ class Att {
 			// Your AJAX handling code
 		}
 		
-
-
-
-// $schedules = wp_get_schedules();
-// echo '<pre>';
-// print_r($schedules);
-// echo '</pre>';
 
 
 	}
@@ -263,7 +256,7 @@ class Att {
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
 	 * @since     1.0.0
-	 * @return    Att_Loader    Orchestrates the hooks of the plugin.
+	 * @return    Attp_Loader    Orchestrates the hooks of the plugin.
 	 */
 	public function get_loader() {
 		return $this->loader;

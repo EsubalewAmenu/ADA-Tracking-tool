@@ -6,8 +6,8 @@
  * @link       https://github.com/EsubalewAmenu
  * @since      1.0.0
  *
- * @package    Att_admin
- * @subpackage Att_admin/admin
+ * @package    Attp_admin
+ * @subpackage Attp_admin/admin
  */
 
 /**
@@ -16,23 +16,23 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  *
- * @package    Att_admin
- * @subpackage Att_admin/admin
+ * @package    Attp_admin
+ * @subpackage Attp_admin/admin
  * @author     Esubalew Amenu <esubalew.a2009@gmail.com>
  */
-class Att_admin_Base
+class Attp_admin_Base
 {
 
 
     public function __construct()
     {
     }
-    function att_base_menu_section()
+    function attp_base_menu_section()
     {
 
-        $Att_admin_transactions = new Att_admin_transactions();
-        $Att_admin_settings = new Att_admin_settings();
-        $Att_admin_cron_schedule = new Att_admin_cron_schedule();
+        $Attp_admin_transactions = new Attp_admin_transactions();
+        $Attp_admin_settings = new Attp_admin_settings();
+        $Attp_admin_cron_schedule = new Attp_admin_cron_schedule();
 
         $capability = "manage_options";
 
@@ -43,7 +43,7 @@ class Att_admin_Base
             'Cron Schedule',                    // Menu title
             $capability,                          // Capability
             'edit.php?post_type=attp_mails-cron-schedule', // Menu slug
-            array($Att_admin_cron_schedule, "att_menu_cron_schedule_OnClick") // Callback function
+            array($Attp_admin_cron_schedule, "attp_menu_cron_schedule_OnClick") // Callback function
         );
 
         // Adding submenu page to the 'attp_mails' post type
@@ -53,7 +53,7 @@ class Att_admin_Base
             'How to use',                    // Menu title
             $capability,                          // Capability
             'edit.php?post_type=attp_mails-how-to-use', // Menu slug
-            array($this, "att_menu_page_on_click") // Callback function
+            array($this, "attp_menu_page_on_click") // Callback function
         );
 
 
@@ -65,7 +65,7 @@ class Att_admin_Base
             'My Transactions',                    // Menu title
             $capability,                          // Capability
             'edit.php?post_type=attp_mails-my-transactions', // Menu slug
-            array($Att_admin_transactions, "att_menu_my_transactions_OnClick") // Callback function
+            array($Attp_admin_transactions, "attp_menu_my_transactions_OnClick") // Callback function
         );
 
 
@@ -76,11 +76,11 @@ class Att_admin_Base
             'Setting',                    // Menu title
             $capability,                          // Capability
             'edit.php?post_type=attp_mails-settings', // Menu slug
-            array($Att_admin_settings, "att_menu_setting_OnClick") // Callback function
+            array($Attp_admin_settings, "attp_menu_setting_OnClick") // Callback function
         );
     }
 
-    public function att_menu_page_on_click()
+    public function attp_menu_page_on_click()
     {
         include_once plugin_dir_path(dirname(__FILE__)) . 'partials/info/how-to-use.php';
     }

@@ -6,8 +6,8 @@
  * @link       https://github.com/EsubalewAmenu
  * @since      1.0.0
  *
- * @package    Att_public
- * @subpackage Att_public/public
+ * @package    Attp_public
+ * @subpackage Attp_public/public
  */
 
 /**
@@ -16,27 +16,27 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the public-specific stylesheet and JavaScript.
  *
- * @package    Att_public
- * @subpackage Att_public/public
+ * @package    Attp_public
+ * @subpackage Attp_public/public
  * @author     Esubalew Amenu <esubalew.a2009@gmail.com>
  */
-class Att_public_transactions
+class Attp_public_transactions
 {
 
 
-        public function att_transaction_history_OnClick()
+        public function attp_transaction_history_OnClick()
         {
 
                 ob_start();
 
-                wp_enqueue_style('att-transaction-history-style', plugin_dir_url(__FILE__) . '../css/att-public-transaction-history.css', false, '1.0', 'all');
+                wp_enqueue_style('attp-transaction-history-style', plugin_dir_url(__FILE__) . '../css/attp-public-transaction-history.css', false, '1.0', 'all');
 
 
                 if (isset($_GET['count']) && !empty(esc_attr($_GET['count']))) {
                         $attp_tx_per_page = esc_attr($_GET['count']);
                 } else {
                         $name = "attp_tx_per_page";
-                        $options = get_option('ada_tracking_option');
+                        $options = get_option('attp_option');
                         $attp_tx_per_page = isset($options[$name]) ? esc_attr($options[$name]) : 5;
                 }
 
@@ -57,8 +57,8 @@ class Att_public_transactions
                 $order = 'desc';
 
                 require_once plugin_dir_path(dirname(__FILE__)) . '/../common/fetch-data.php';
-                $fetch_data = new ATTP_Fetch_Data();
-                $data = $fetch_data->get_transactions($ada_address, $count, $page, $order);
+                $Attp_Fetch_Data = new Attp_Fetch_Data();
+                $data = $Attp_Fetch_Data->get_transactions($ada_address, $count, $page, $order);
 
                 print_r(json_encode($data));
                 die();

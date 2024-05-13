@@ -6,8 +6,8 @@
  * @link       https://github.com/EsubalewAmenu
  * @since      1.0.0
  *
- * @package    Att
- * @subpackage Att/includes
+ * @package    Attp
+ * @subpackage Attp/includes
  */
 
 /**
@@ -17,11 +17,11 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    Att
- * @subpackage Att/includes
+ * @package    Attp
+ * @subpackage Attp/includes
  * @author     Esubalew A <esubalew.a2009@gmail.com>
  */
-class Att_Loader {
+class Attp_Loader {
 
 	/**
 	 * The array of actions registered with WordPress.

@@ -6,8 +6,8 @@
  * @link       https://github.com/EsubalewAmenu
  * @since      1.0.0
  *
- * @package    Att_admin
- * @subpackage Att_admin/admin
+ * @package    Attp_admin
+ * @subpackage Attp_admin/admin
  */
 
 /**
@@ -16,12 +16,12 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  *
- * @package    Att_admin
- * @subpackage Att_admin/admin
+ * @package    Attp_admin
+ * @subpackage Attp_admin/admin
  * @author     Esubalew Amenu <esubalew.a2009@gmail.com>
  */
 
-class ATTP_Fetch_Data
+class Attp_Fetch_Data
 {
     private $blockfrost_base_url = 'https://cardano-mainnet.blockfrost.io/api/v0/';
     private $adastat_base_url = 'https://adastat.net/api/rest/v1/';
@@ -35,8 +35,8 @@ class ATTP_Fetch_Data
             $url .= "&from=$block";
         }
 
-        $name = "blockfrost_api";
-        $options = get_option('ada_tracking_option');
+        $name = "attp_blockfrost_api";
+        $options = get_option('attp_option');
         $api_key = isset($options[$name]) ? esc_attr($options[$name]) : '';
 
         $args = array(

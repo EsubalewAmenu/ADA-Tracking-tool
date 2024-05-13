@@ -6,8 +6,8 @@
  * @link       https://github.com/EsubalewAmenu
  * @since      1.0.0
  *
- * @package    Att_admin
- * @subpackage Att_admin/admin
+ * @package    Attp_admin
+ * @subpackage Attp_admin/admin
  */
 
 /**
@@ -16,35 +16,35 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  *
- * @package    Att_admin
- * @subpackage Att_admin/admin
+ * @package    Attp_admin
+ * @subpackage Attp_admin/admin
  * @author     Esubalew Amenu <esubalew.a2009@gmail.com>
  */
-class Att_admin_cron_schedule
+class Attp_admin_cron_schedule
 {
 
-    public function att_menu_cron_schedule_OnClick()
+    public function attp_menu_cron_schedule_OnClick()
     {
         include_once plugin_dir_path(dirname(__FILE__)) . 'partials/settings/cron-schedule.php';
     }
 
     // Register Settings and Add Fields
-    function att_register_settings()
+    function attp_register_settings()
     {
-        register_setting('att-cron-options', 'att_cron_schedule');
+        register_setting('attp-cron-options', 'attp_cron_schedule');
         add_settings_section(
-            'att_cron_main',
+            'attp_cron_main',
             'Config your cron schedule settings below.',
-            array($this, 'att_cron_main_text'),
-            'att-cron-schedule'
+            array($this, 'attp_cron_main_text'),
+            'attp-cron-schedule'
         );
 
         add_settings_field(
-            "att_cron_schedule_fieldtezt",
+            "attp_cron_schedule_fieldtezt",
             'Cron Schedule status',
             function () {
 
-                $hook = 'att_cron_hook';
+                $hook = 'attp_cron_hook';
 
                 $timestamp = wp_next_scheduled($hook);
 
@@ -58,26 +58,25 @@ class Att_admin_cron_schedule
                     $seconds = $time_difference % 60;
 
 
-                    $name = "att_cron_schedule_fieldtezt";
                     $description =  'Cron Schedule is running. Next run: ' . $formatted_time . "<br>" .
                         'Time until next run: ' . $hours . ' hours, ' . $minutes . ' minutes, and ' . $seconds . ' seconds.';
                     echo $description;
                 } else {
 
-                    $name = "att_cron_schedule_fieldtezt";
+                    $name = "attp_cron_schedule_fieldtezt";
                     $description = "Cron Schedule is not running.";
                     echo $description;
                 }
             },
-            'att-cron-schedule',
-            'att_cron_main'
+            'attp-cron-schedule',
+            'attp_cron_main'
         );
         add_settings_field(
-            "att_cron_schedule_field",
+            "attp_cron_schedule_field",
             'Cron Schedule',
             function () {
-                $value = get_option('att_cron_schedule', 'hourly'); // Default to 'hourly' if not set
-                echo "<select id='att_cron_schedule_field' name='att_cron_schedule'>";
+                $value = get_option('attp_cron_schedule', 'hourly'); // Default to 'hourly' if not set
+                echo "<select id='attp_cron_schedule_field' name='attp_cron_schedule'>";
                 echo "<option value='every_minute' " . selected($value, 'every_minute', false) . ">Every Minute</option>";
                 echo "<option value='every_five_minutes' " . selected($value, 'every_five_minutes', false) . ">Every 5 Minutes</option>";
                 echo "<option value='hourly' " . selected($value, 'hourly', false) . ">Hourly</option>";
@@ -85,23 +84,23 @@ class Att_admin_cron_schedule
                 echo "<option value='daily' " . selected($value, 'daily', false) . ">Daily</option>";
                 echo "</select>";
             },
-            'att-cron-schedule',
-            'att_cron_main'
+            'attp-cron-schedule',
+            'attp_cron_main'
         );
     }
 
-    function att_cron_main_text()
+    function attp_cron_main_text()
     {
         // echo '<p>Enter your cron schedule settings below.</p>';
     }
 
 
     // Managing the Cron Jobs
-    function att_update_cron_job()
+    function attp_update_cron_job()
     {
 
-        $schedule = get_option('att_cron_schedule');
-        $hook = 'att_cron_hook';
+        $schedule = get_option('attp_cron_schedule');
+        $hook = 'attp_cron_hook';
 
         $current_time = current_time('timestamp'); // Get the current time according to WordPress
         $next_scheduled = wp_next_scheduled($hook); // Check when the cron is scheduled
@@ -111,7 +110,7 @@ class Att_admin_cron_schedule
         $schedules = wp_get_schedules();
 
         if ($next_scheduled && ($current_time > $next_scheduled)) {
-            self::att_execute_cron_job();
+            self::attp_execute_cron_job();
         }
         if ((!$next_scheduled || $current_time > $next_scheduled) && isset($schedules[$schedule]) && !empty($next_scheduled)) {
             wp_clear_scheduled_hook($hook);
@@ -120,34 +119,34 @@ class Att_admin_cron_schedule
         }
     }
 
-    function att_execute_cron_job()
+    function attp_execute_cron_job()
     {
 
 
-        $name = "receiving_address";
-        $options = get_option('ada_tracking_option');
+        $name = "attp_receiving_address";
+        $options = get_option('attp_option');
         $receiving_address = isset($options[$name]) ? esc_attr($options[$name]) : '';
         $ATTP_mail_templete_post_type_Admin = new ATTP_mail_templete_post_type_Admin();
 
-        $notif_email_address_cb = isset($options["notif_email_address_cb"]) && $options["notif_email_address_cb"] === 'on' ? true : false;
+        $notif_email_address_cb = isset($options["attp_notif_email_address_cb"]) && $options["attp_notif_email_address_cb"] === 'on' ? true : false;
         // $receiving_address = '';
         if (substr($receiving_address, 0, 4) === "addr" && $notif_email_address_cb) {
             include_once plugin_dir_path(dirname(__FILE__)) . '../common/fetch-data.php';
-            $ATTP_Fetch_Data = new ATTP_Fetch_Data();
+            $Attp_Fetch_Data = new Attp_Fetch_Data();
 
-            $count = isset($options["attp_tx_per_page"]) ? esc_attr($options["attp_tx_per_page"]) : 10;
+            $count = isset($options["attp_attp_tx_per_page"]) ? esc_attr($options["attp_attp_tx_per_page"]) : 10;
             $page = 1;
             $order = "asc";
-            $block = isset($options["last_synced_block"]) ? esc_attr($options["last_synced_block"]) : '0';
-            $data = $ATTP_Fetch_Data->get_transactions($receiving_address, $count, $page, $order, $block);
+            $block = isset($options["attp_last_synced_block"]) ? esc_attr($options["attp_last_synced_block"]) : '0';
+            $data = $Attp_Fetch_Data->get_transactions($receiving_address, $count, $page, $order, $block);
             if (is_array($data)) {
 
 
-                $prefix_filter_cb = isset($options["prefix_filter_cb"]) && $options["prefix_filter_cb"] === 'on' ? true : false;
-                $prefix_filter = isset($options["prefix_filter"]) ? esc_attr($options["prefix_filter"]) : '';
+                $prefix_filter_cb = isset($options["attp_prefix_filter_cb"]) && $options["attp_prefix_filter_cb"] === 'on' ? true : false;
+                $prefix_filter = isset($options["attp_prefix_filter"]) ? esc_attr($options["attp_prefix_filter"]) : '';
 
-                $suffix_filter_cb = isset($options["suffix_filter_cb"]) && $options["suffix_filter_cb"] === 'on' ? true : false;
-                $suffix_filter = isset($options["suffix_filter"]) ? esc_attr($options["suffix_filter"]) : '';
+                $suffix_filter_cb = isset($options["attp_suffix_filter_cb"]) && $options["attp_suffix_filter_cb"] === 'on' ? true : false;
+                $suffix_filter = isset($options["attp_suffix_filter"]) ? esc_attr($options["attp_suffix_filter"]) : '';
 
 
                 $removable_tx_indexs = array();
@@ -157,13 +156,14 @@ class Att_admin_cron_schedule
                     $block_height = $data[$single_tx_index]['block_height'];
                     $tx_index = $data[$single_tx_index]['tx_index'];
 
-                    $options = get_option('ada_tracking_option');
-                    $last_synced_block = isset($options["last_synced_block"]) ? esc_attr($options["last_synced_block"]) : '0';
-                    $last_synced_tx_index = isset($options["last_synced_tx_index"]) ? esc_attr($options["last_synced_tx_index"]) : '0';
+                    $options = get_option('attp_option');
+                    $last_synced_block = isset($options["attp_last_synced_block"]) ? esc_attr($options["attp_last_synced_block"]) : '0';
+                    $last_synced_tx_index = isset($options["attp_last_synced_tx_index"]) ? esc_attr($options["attp_last_synced_tx_index"]) : '0';
+
                     if ($block_height > $last_synced_block || ($block_height == $last_synced_block && $tx_index > $last_synced_tx_index)) {
-                        $options['last_synced_block'] = $block_height;
-                        $options['last_synced_tx_index'] = $tx_index;
-                        update_option('ada_tracking_option', $options);
+                        $options['attp_last_synced_block'] = $block_height;
+                        $options['attp_last_synced_tx_index'] = $tx_index;
+                        update_option('attp_option', $options);
 
 
                         $message = $data[$single_tx_index]['message'] != null ? $data[$single_tx_index]['message'] : '';
@@ -182,7 +182,7 @@ class Att_admin_cron_schedule
                 }
 
                 if ($data) {
-                    $notif_email_address = isset($options['notif_email_address']) ? esc_attr($options['notif_email_address']) : '';
+                    $notif_email_address = isset($options['attp_notif_email_address']) ? esc_attr($options['attp_notif_email_address']) : '';
                     $bodyReplacements['site_admin_name'] = get_option('blogname');
                     $ATTP_mail_templete_post_type_Admin->template($notif_email_address, 'new-transaction-templete', $data, $bodyReplacements);
                 }
@@ -194,28 +194,28 @@ class Att_admin_cron_schedule
 
     // Handle Form Submissions to Start/Stop Cron Jobs
 
-    function att_handle_cron_actions()
+    function attp_handle_cron_actions()
     {
-        if (isset($_POST['att_start_cron'])) {
-            if (check_admin_referer('att_cron_actions', 'att_cron_nonce')) {
+        if (isset($_POST['attp_start_cron'])) {
+            if (check_admin_referer('attp_cron_actions', 'attp_cron_nonce')) {
                 if (current_user_can('manage_options')) {
-                    self::att_start_cron_job();
+                    self::attp_start_cron_job();
                 }
             }
-        } elseif (isset($_POST['att_stop_cron'])) {
-            if (check_admin_referer('att_cron_actions', 'att_cron_nonce')) {
+        } elseif (isset($_POST['attp_stop_cron'])) {
+            if (check_admin_referer('attp_cron_actions', 'attp_cron_nonce')) {
                 if (current_user_can('manage_options')) {
-                    self::att_stop_cron_job();
+                    self::attp_stop_cron_job();
                 }
             }
         }
     }
 
 
-    function att_start_cron_job()
+    function attp_start_cron_job()
     {
-        $schedule = get_option('att_cron_schedule');
-        $hook = 'att_cron_hook';
+        $schedule = get_option('attp_cron_schedule');
+        $hook = 'attp_cron_hook';
 
         // Clear any existing hook
         wp_clear_scheduled_hook($hook);
@@ -225,9 +225,9 @@ class Att_admin_cron_schedule
         }
     }
 
-    function att_stop_cron_job()
+    function attp_stop_cron_job()
     {
-        $hook = 'att_cron_hook';
+        $hook = 'attp_cron_hook';
         wp_clear_scheduled_hook($hook);
     }
 

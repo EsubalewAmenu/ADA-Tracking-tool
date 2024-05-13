@@ -1,4 +1,4 @@
-# ATT - ADA Traking Tool
+# ATTP - ADA Traking Tool Plugin
 Contributors: esubalewa
 Tags: Cardano, blockchain, explorer
 Requires at least: 3.0.1
