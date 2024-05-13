@@ -60,13 +60,12 @@ class Attp_admin_cron_schedule
 
                     $description =  'Cron Schedule is running. Next run: ' . $formatted_time . "<br>" .
                         'Time until next run: ' . $hours . ' hours, ' . $minutes . ' minutes, and ' . $seconds . ' seconds.';
-                    echo esc_attr($description);
                 } else {
 
                     $name = "attp_cron_schedule_fieldtezt";
                     $description = "Cron Schedule is not running.";
-                    echo esc_attr($description);
                 }
+                echo wp_kses_post($description);
             },
             'attp-cron-schedule',
             'attp_cron_main'
@@ -170,10 +169,10 @@ class Attp_admin_cron_schedule
 
                         if ($prefix_filter_cb && substr($message, 0, strlen($prefix_filter)) !== $prefix_filter) {
                             $removable_tx_indexs[] = $single_tx_index;
-                        }else if ($suffix_filter_cb && substr($message, -strlen($suffix_filter)) !== $suffix_filter) {
+                        } else if ($suffix_filter_cb && substr($message, -strlen($suffix_filter)) !== $suffix_filter) {
                             $removable_tx_indexs[] = $single_tx_index;
                         }
-                    }else{
+                    } else {
                         $removable_tx_indexs[] = $single_tx_index;
                     }
                 }
