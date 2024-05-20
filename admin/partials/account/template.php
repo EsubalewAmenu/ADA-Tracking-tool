@@ -78,27 +78,21 @@
         <br><br>
         <p class="para_5" style="margin-bottom: 16px; padding-top:30px;">
           Thanks,<br/>
-          Team <?php get_bloginfo('name') ?>.
+          Team {{--site_admin_name--}}.
         </p>
       </div>
       <div class="social-icons">
 				<a href="https://twitter.com/esubalewa" target="_blank">
-					<img src="https://similarpng.com/wp-content/uploadPngfree/thumbnail/2024/03/X-logo---Twitter-logo-icon-in-round-black-color-on-transparent-PNG.png"  alt="twitter" width="20px" style="padding-bottom:5px;margin:0 5px;">
+					<img src='{{--twitter--}}'  alt="twitter" width="20px" style="padding-bottom:5px;margin:0 5px;">
 				</a>
 				<a href="https://www.linkedin.com/in/esubalew-amenu/" target="_blank">
-					<img src="https://image.similarpng.com/very-thumbnail/2020/07/Linkedin-logo-on-transparent-Background-PNG-.png"  alt="linkedin" width="20px" style="padding-bottom:5px;margin:0 5px;">
+					<img src="{{--linkedin--}}"  alt="linkedin" width="20px" style="padding-bottom:5px;margin:0 5px;">
 				</a>
 				<a href="https://t.me/esubalewa" target="_blank">
-					<img src="https://image.similarpng.com/very-thumbnail/2020/07/Telegram-icon-on-transparent-background-PNG.png" alt="telegram" width="20px" style="padding-bottom:5px;margin:0 5px;" >
+					<img src="{{--telegram--}}" alt="telegram" width="20px" style="padding-bottom:5px;margin:0 5px;" >
 				</a>
 			</div>
 
-      <img
-        src="{{--home_url--}}/wp-content/plugins/mp-mailing-list/email_templete/assets/img/Line91.png"
-        alt=""
-        class="line_bottom"
-        style="margin: 15px auto; padding: 0"
-      />
       <div class="main_footer" style="margin: 0; padding: 0">
         <ul style="margin: 0; padding: 0; list-style: none; text-align: center">
           <li
