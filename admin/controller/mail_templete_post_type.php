@@ -125,6 +125,12 @@ class ATTP_mail_templete_post_type_Admin
 
             $email_content = str_replace("{{--home_url--}}", home_url(), $email_content);
 
+            $email_content = str_replace("{{--twitter--}}", plugin_dir_url(__FILE__)."../../common/images/X-logo.png", $email_content);
+            $email_content = str_replace("{{--telegram--}}", plugin_dir_url(__FILE__)."../../common/images/telegram-icon.png", $email_content);
+            $email_content = str_replace("{{--linkedin--}}", plugin_dir_url(__FILE__)."../../common/images/linkedin-logo.png", $email_content);
+
+            $email_content = str_replace("{{--site_admin_name--}}", get_bloginfo('name'), $email_content);
+            
             $header = array('Content-Type: text/html; charset=UTF-8');
 
             return wp_mail($email, $subject, $email_content, $header);
