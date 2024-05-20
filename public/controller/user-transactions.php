@@ -37,7 +37,7 @@ class Attp_public_transactions
 
                 if (isset($_GET['count'], $_GET['_wpnonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'], 'count_nonce')))) {
                         if (!empty($_GET['count'])) {
-                                $attp_tx_per_page = esc_attr($_GET['count']);
+                                $attp_tx_per_page = esc_attr(sanitize_text_field($_GET['count']));
                         }
                 }
 
