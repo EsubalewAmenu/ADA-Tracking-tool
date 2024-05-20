@@ -148,18 +148,6 @@
           </li>
         </ul>
         <div class="footer_logo" style="margin: 0; padding: 0">
-          <h3
-            style="
-              margin: 0;
-              padding: 0;
-              font-family: Roboto;
-              font-weight: bolder;
-              margin-top: 16px;
-              color: #FFFFFF;
-            "
-          >
-            <?php get_bloginfo('name') ?>
-          </h3>
         </div>
       </div>
 
