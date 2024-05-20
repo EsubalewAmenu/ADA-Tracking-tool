@@ -236,13 +236,13 @@ class Attp_admin_cron_schedule
         // Add a custom interval of every 1 minutes
         $schedules['every_minute'] = array(
             'interval' => 20,  // Time in seconds
-            'display'  => __('Every Five Minutes')
+            'display'  => __('Every One Minutes', 'ada-tracking-tool')
         );
 
         // Add a custom interval of every 5 minutes
         $schedules['every_five_minutes'] = array(
             'interval' => 300,  // Time in seconds
-            'display'  => __('Every Five Minutes')
+            'display'  => __('Every Five Minutes', 'ada-tracking-tool')
         );
 
         return $schedules;
