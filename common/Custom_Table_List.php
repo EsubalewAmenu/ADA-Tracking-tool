@@ -21,8 +21,8 @@
  * @author     Esubalew Amenu <esubalew.a2009@gmail.com>
  */
 
- require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
- if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
  
  class Attp_Custom_Table_List extends WP_List_Table {
      private $data = array(); // Class property to store data
