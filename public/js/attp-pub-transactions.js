@@ -19,8 +19,10 @@
                 tableBody.innerHTML = '';
 
                 if (validateInputs()) { // Validate the input before fetching the transaction history
+                    page = 1;
                     fetchTransactionHistory(); // Only call this function if the input is valid
                 }
+
             });
         }
 
@@ -42,6 +44,7 @@
         function fetchTransactionHistory() {
 
             $loadMoreBtn.text('Loading...').attr('disabled', true); // Change button text and disable it
+            fetch_btn.text('Loading...').attr('disabled', true); // Change button text and disable it
             jQuery.ajax({
                 url: attp_ajax_object.ajax_url,
                 type: 'POST',
@@ -74,10 +77,13 @@
                         alert('Failed to parse transaction data. ' + response);
                     }
                     $loadMoreBtn.text('Load More').attr('disabled', false); // Reset button text and re-enable
+                fetch_btn.text('Show latest transactions').attr('disabled', false); // Reset button text and re-enable
+
                 },
                 error: function () {
                     alert('Error loading more transactions.');
                     $loadMoreBtn.text('Load More').attr('disabled', false); // Reset button text and re-enable
+                    fetch_btn.text('Show latest transactions').attr('disabled', false); // Reset button text and re-enable
                 }
             });
 
