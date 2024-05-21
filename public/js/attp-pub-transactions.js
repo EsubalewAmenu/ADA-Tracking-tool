@@ -29,8 +29,9 @@
             var currentUrl = new URL(window.location.href);
             currentUrl.searchParams.set('count', value); // Set or update the 'count' parameter
             currentUrl.searchParams.set('_wpnonce', attp_ajax_object.count_nonce);
+            currentUrl.searchParams.set('address', ada_address);
 
-
+            
             window.location.href = currentUrl.toString(); // Reloads the page with updated URL
         }
 

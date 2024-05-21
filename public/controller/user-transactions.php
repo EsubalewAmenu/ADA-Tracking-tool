@@ -36,8 +36,9 @@ class Attp_public_transactions
                 $attp_tx_per_page = isset($options[$name]) ? esc_attr($options[$name]) : 5;
 
                 if (isset($_GET['count'], $_GET['_wpnonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'])), 'count_nonce')) {
-                        if (!empty($_GET['count'])) {
+                        if (!empty($_GET['count']) && !empty($_GET['address'])) {
                                 $attp_tx_per_page = esc_attr(sanitize_text_field($_GET['count']));
+                                $address = esc_attr(sanitize_text_field($_GET['address']));
                         }
                 }
 

@@ -4,7 +4,7 @@
 
         <div>
             <label class="form-label" for="ada_address">Paste your address here...</label>
-            <input class="form-input" type="ada_address" name="ada_address" id="ada_address" placeholder='The address should start with "addr"' required>
+            <input class="form-input" type="ada_address" name="ada_address" id="ada_address" placeholder='The address should start with "addr"' value="<?php echo isset($address) ? $address : ''?>" required>
 
             <button id="fetch_btn" class="fetch-button" type="button">Show latest transactions</button>
         </div>
