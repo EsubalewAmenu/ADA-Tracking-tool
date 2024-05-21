@@ -35,13 +35,20 @@ class Attp_public_transactions
                 $options = get_option('attp_option');
                 $attp_tx_per_page = isset($options[$name]) ? esc_attr($options[$name]) : 5;
 
-                if (isset($_GET['count'], $_GET['_wpnonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'], 'count_nonce')))) {
+                if (isset($_GET['count'], $_GET['_wpnonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['_wpnonce'])), 'count_nonce')) {
                         if (!empty($_GET['count'])) {
                                 $attp_tx_per_page = esc_attr(sanitize_text_field($_GET['count']));
                         }
                 }
 
                 include_once plugin_dir_path(dirname(__FILE__)) . 'partials/user-transactions.php';
+
+                wp_enqueue_script('attp-public-transactions', plugin_dir_url(__FILE__) . '../js/attp-pub-transactions.js', array('jquery'), '1.0.0', false);
+                wp_localize_script('attp-public-transactions', 'attp_ajax_object', array(
+                        'ajax_url' => admin_url('admin-ajax.php'),
+                        'count_nonce' => wp_create_nonce('count_nonce'),
+                        'nonce' => wp_create_nonce('load_transaction_history_nonce'),
+                ));
 
                 return ob_get_clean();
         }
