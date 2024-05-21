@@ -25,7 +25,7 @@
 				action: 'load_more_transactions',
 				page: page,
 				count: document.getElementById('tx-per-page').value,
-				security: attp_ajax_object.nonce //'<?php echo esc_attr(wp_create_nonce("load_more_transactions")); ?>'
+				security: attp_ajax_object.nonce
 			},
 			success: function(response) {
 				if (response.success) {
