@@ -187,10 +187,10 @@ class Attp_admin_settings
         );
 
         add_settings_field(
-            "attp_attp_tx_per_page",
+            "attp_tx_per_page",
             'TX per page',
             function () {
-                $name = "attp_attp_tx_per_page";
+                $name = "attp_tx_per_page";
                 $description = 'Default number of transactions that will be loaded per page';
 
 
