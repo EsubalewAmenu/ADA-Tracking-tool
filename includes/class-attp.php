@@ -217,16 +217,6 @@ class Attp {
 		$Attp_admin_transactions = new Attp_admin_transactions();
 		$this->loader->add_action('wp_ajax_load_more_transactions', $Attp_admin_transactions, 'load_more_transactions');
 
-		add_action('wp_ajax_load_transaction_history', 'load_transaction_history_callback');
-
-		function load_transaction_history_callback() {
-			// Verify nonce
-			if ( ! isset( $_POST['security'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash ( $_POST['security'])), 'load_transaction_history_nonce' ) ) {
-				wp_send_json_error( 'Nonce verification failed.', 403 );
-			}
-		
-			// Your AJAX handling code
-		}
 		
 
 
