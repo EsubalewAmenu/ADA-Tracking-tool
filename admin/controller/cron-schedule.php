@@ -125,7 +125,7 @@ class Attp_admin_cron_schedule
         $name = "attp_receiving_address";
         $options = get_option('attp_option');
         $receiving_address = isset($options[$name]) ? esc_attr($options[$name]) : '';
-        $ATTP_mail_templete_post_type_Admin = new ATTP_mail_templete_post_type_Admin();
+        $ATTP_mail_template_post_type_Admin = new ATTP_mail_template_post_type_Admin();
 
         $notif_email_address_cb = isset($options["attp_notif_email_address_cb"]) && $options["attp_notif_email_address_cb"] === 'on' ? true : false;
         // $receiving_address = '';
@@ -183,7 +183,7 @@ class Attp_admin_cron_schedule
                 if ($data) {
                     $notif_email_address = isset($options['attp_notif_email_address']) ? esc_attr($options['attp_notif_email_address']) : '';
                     $bodyReplacements['site_admin_name'] = get_option('blogname');
-                    $ATTP_mail_templete_post_type_Admin->template($notif_email_address, 'new-transaction-templete', $data, $bodyReplacements);
+                    $ATTP_mail_template_post_type_Admin->template($notif_email_address, 'new-transaction-template', $data, $bodyReplacements);
                 }
             }
         }

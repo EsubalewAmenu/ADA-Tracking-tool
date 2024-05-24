@@ -121,7 +121,7 @@ class Attp {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controller/transactions.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controller/cron-schedule.php';
 
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controller/mail_templete_post_type.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/controller/mail_template_post_type.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
@@ -173,8 +173,8 @@ class Attp {
 		$this->loader->add_action('admin_init', $Attp_admin_settings, 'ada_tracking_settings_init');
 
 
-		$ATTP_mail_templete_post_type_Admin = new ATTP_mail_templete_post_type_Admin();
-		$this->loader->add_action('init', $ATTP_mail_templete_post_type_Admin, 'attp_mail_templete_format_init', 1, 1);
+		$ATTP_mail_template_post_type_Admin = new ATTP_mail_template_post_type_Admin();
+		$this->loader->add_action('init', $ATTP_mail_template_post_type_Admin, 'attp_mail_template_format_init', 1, 1);
 	}
 
 	/**

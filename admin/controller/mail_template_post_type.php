@@ -20,7 +20,7 @@
  * @subpackage ATTP_mail/admin
  * @author     Esubalew A. <esubalew.amenu@singularitynet.io>
  */
-class ATTP_mail_templete_post_type_Admin
+class ATTP_mail_template_post_type_Admin
 {
 
     /**
@@ -35,20 +35,20 @@ class ATTP_mail_templete_post_type_Admin
     {
     }
 
-    function attp_mail_templete_format_init()
+    function attp_mail_template_format_init()
     {
 
         $labels = array(
-            'name'                  => _x('Email Templetes', 'Post type general name', 'ada-tracking-tool'),
+            'name'                  => _x('Email Templates', 'Post type general name', 'ada-tracking-tool'),
             'singular_name'         => _x('ADA tracking', 'Post type singular name', 'ada-tracking-tool'),
             'menu_name'             => _x('ADA trackings', 'Admin Menu text', 'ada-tracking-tool'),
             'name_admin_bar'        => _x('ADA trackings', 'Add New on Toolbar', 'ada-tracking-tool'),
-            'add_new'               => __('New Email Templete', 'ada-tracking-tool'),
+            'add_new'               => __('New Email Template', 'ada-tracking-tool'),
             'add_new_item'          => __('Add New ADA tracking', 'ada-tracking-tool'),
             'new_item'              => __('New ADA tracking', 'ada-tracking-tool'),
             'edit_item'             => __('Edit ADA tracking', 'ada-tracking-tool'),
             'view_item'             => __('View ADA tracking', 'ada-tracking-tool'),
-            'all_items'             => __('All Email Templetes', 'ada-tracking-tool'),
+            'all_items'             => __('All Email Templates', 'ada-tracking-tool'),
             'search_items'          => __('Search ADA trackings', 'ada-tracking-tool'),
             'parent_item_colon'     => __('Parent ADA trackings:', 'ada-tracking-tool'),
             'not_found'             => __('No ADA trackings found.', 'ada-tracking-tool'),
