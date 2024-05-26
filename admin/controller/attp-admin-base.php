@@ -39,24 +39,23 @@ class Attp_admin_Base
         // Adding submenu page to the 'attp_mails' post type
         add_submenu_page(
             'edit.php?post_type=attp_mails',      // Parent slug
+            'How to use',                    // Page title
+            'How to use',                    // Menu title
+            $capability,                          // Capability
+            'edit.php?post_type=attp_mails-how-to-use', // Menu slug
+            array($this, "attp_menu_page_on_click"), // Callback function
+            0                                            // Position
+        );
+        
+        // Adding submenu page to the 'attp_mails' post type
+        add_submenu_page(
+            'edit.php?post_type=attp_mails',      // Parent slug
             'Cron Schedule',                    // Page title
             'Cron Schedule',                    // Menu title
             $capability,                          // Capability
             'edit.php?post_type=attp_mails-cron-schedule', // Menu slug
             array($Attp_admin_cron_schedule, "attp_menu_cron_schedule_OnClick") // Callback function
         );
-
-        // Adding submenu page to the 'attp_mails' post type
-        add_submenu_page(
-            'edit.php?post_type=attp_mails',      // Parent slug
-            'How to use',                    // Page title
-            'How to use',                    // Menu title
-            $capability,                          // Capability
-            'edit.php?post_type=attp_mails-how-to-use', // Menu slug
-            array($this, "attp_menu_page_on_click") // Callback function
-        );
-
-
 
         // Adding submenu page to the 'attp_mails' post type
         add_submenu_page(
